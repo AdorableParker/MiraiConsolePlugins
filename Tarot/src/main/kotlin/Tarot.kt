@@ -1,9 +1,8 @@
 package org.nymph
 
+
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
-import net.mamoe.mirai.console.internal.data.builtins.AutoLoginConfig
-import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.enable
 import net.mamoe.mirai.console.plugin.info
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin

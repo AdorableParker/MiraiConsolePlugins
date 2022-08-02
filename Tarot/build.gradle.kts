@@ -4,6 +4,7 @@ plugins {
     kotlin("plugin.serialization") version kotlinVersion
 
     id("net.mamoe.mirai-console") version "2.12.0"
+//    id("net.mamoe.mirai-console") version "2.9.0"
 }
 
 group = "org.nymph"
