@@ -1,0 +1,8 @@
+id: org.nymph.bank
+name: Bank
+version: 0.1.0
+dependencies:
+  - "org.nymph.personal-account:[0.1.0,2.0.0)"
+  - "org.nymph.job-broadcast:[0.1.0,2.0.0)"
+author: parker
+info: 银行-TB插件子功能模块

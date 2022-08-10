@@ -2,6 +2,10 @@ package org.nymph
 
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
+import net.mamoe.mirai.console.data.PluginData
+import net.mamoe.mirai.console.data.PluginDataHolder
+import net.mamoe.mirai.console.data.PluginDataStorage
+import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.load
 import net.mamoe.mirai.console.plugin.info
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
@@ -11,6 +15,7 @@ import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.utils.info
 import net.mamoe.mirai.utils.warning
 import org.nymph.Data.echoDataSet
+import org.nymph.PokeEcho.reload
 import org.nymph.org.nymph.DeleteReply
 
 object PokeEcho : KotlinPlugin(
@@ -25,6 +30,8 @@ object PokeEcho : KotlinPlugin(
 ) {
     override fun onEnable() {
         logger.info { "$info-已加载" }
+
+        Data.reload()
 
         AddReply.register()
         DeleteReply.register()

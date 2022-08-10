@@ -20,4 +20,5 @@ repositories {
 
 dependencies {
     implementation("com.github.AdorableParker.Nymph-ToolDependency-repo:seed:0.2.1")
+    "shadowLink"("com.github.AdorableParker.Nymph-ToolDependency-repo:seed")
 }

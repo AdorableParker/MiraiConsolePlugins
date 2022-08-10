@@ -1,0 +1,19 @@
+package org.nymph
+
+import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
+import net.mamoe.mirai.console.command.SimpleCommand
+import net.mamoe.mirai.contact.nameCardOrNick
+
+
+object MyInfo : SimpleCommand(
+    PersonalAccount, "MyInfo", "我的信息",
+) {
+    @Handler
+    suspend fun MemberCommandSenderOnMessage.main() {
+        if (group.botMuteRemaining > 0) return
+
+        val userInfo = Account.user.getOrPut(user.id){UserAccount(200,0,200,0)}
+
+        sendMessage("${user.nameCardOrNick}\n|金币:${userInfo.gold}枚\n|魔方:${userInfo.cube}个\n|好感度:${userInfo.favorAbility}‰")
+    }
+}

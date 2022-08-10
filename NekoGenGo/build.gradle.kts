@@ -17,4 +17,5 @@ repositories {
 
 dependencies {
     implementation("com.github.AdorableParker:nekoencode:0.1.0")
+    "shadowLink"("com.github.AdorableParker:nekoencode")
 }

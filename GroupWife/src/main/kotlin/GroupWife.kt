@@ -6,8 +6,6 @@ import net.mamoe.mirai.console.plugin.info
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.utils.info
-import java.awt.SystemColor
-import java.awt.SystemColor.info
 
 object GroupWife : KotlinPlugin(
     JvmPluginDescription(
@@ -20,7 +18,7 @@ object GroupWife : KotlinPlugin(
     }
 ) {
     override fun onEnable() {
-        logger.info { "${SystemColor.info}-已加载" }
+        logger.info { "$info-已加载" }
         WifeToday.register()
     }
 
