@@ -6,5 +6,6 @@ import kotlinx.serialization.Serializable
 enum class GameState {
     Closure,
     CanRegister,
-    Started
+    CanStarted,
+    Processing
 }

@@ -18,21 +18,21 @@ class Game21 {
 
     private fun settlement(): Message {
         val info = MessageChainBuilder()
-        info.add("本轮结算:\n${playerList[0].atPlayer}\t手牌:${playerList[0].handCard.drop(1)}\n")
+        info.add("本轮结算:\n庄家\t手牌:${playerList[0].handCard.drop(1)}+[暗牌]\n")
         for (index in 1 until playerList.size) {
             val player = playerList[index]
-            info.add(player.atPlayer)
-            info.add("\t手牌:${player.handCard}\t共计${player.sum()}点")
+            info.add(At(player.playerID))
+            info.add("\n手牌:${player.handCard}\n共计${player.sum()}点")
             when (player.nowPoint) {
                 in 1..20 -> info.add(" - 等待\n")
-                21 -> info.add(" - 获胜\n")
+                21 -> info.add(" - 停牌\n")
                 else -> info.add(" - 爆牌\n")
             }
         }
         next = nextPlayer()
         if (next != 0) {
             info.add("----------\n轮到")
-            info.add(playerList[next].atPlayer)
+            info.add(At(playerList[next].playerID))
             info.add("行动")
         } else finalDeal()
 
@@ -48,12 +48,11 @@ class Game21 {
 
     private fun firstDeal(): Message {
         deck.shuffle()
-        gameState = GameState.Started
-
+        gameState = GameState.Processing
         for (index in 0 until (playerList.size * 2)) {
             playerList[index % playerList.size].handCard.add(deck.removeFirst())
         }
-
+        next = 1
         return if (playerList[0].sum() == 21) chipSettlement() else settlement()
     }
 
@@ -82,11 +81,16 @@ class Game21 {
         }
         val info = MessageChainBuilder()
         for (player in playerList) {
-            if (player.playerID == 0L) continue
+            if (player.playerID == 0L) {
+                info.add("庄家:\t牌型:${player.handCard}\n共计${player.nowPoint}点\n")
+                continue
+            }
+            info.add(At(player.playerID))
+            info.add("\n牌型:${player.handCard}\n共计${player.sum()}点")
             val account = Account.user.getOrPut(player.playerID) { UserAccount(0, 0, 200, 0) }
             val chips = (player.odds * player.ante).toInt()
             account.gold += chips
-            info.add(player.atPlayer)
+            info.add(At(player.playerID))
             info.add("\t筹码结算:$chips\n")
         }
         gameState = GameState.Closure
@@ -108,23 +112,23 @@ class Game21 {
                 "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
             )
         )
-        playerList.add(Player(0, PlainText("庄家")))
+        playerList.add(Player(0))
         gameState = GameState.CanRegister
     }
 
     fun signUp(playerID: Long): String {
         if (findPlayer(playerID)) return "你已经报过名了"
         if (playerList.size >= 6) return "人数已满,使用发牌命令开始游戏"
-
-        playerList.add(Player(playerID, At(playerID)))
+        playerList.add(Player(playerID))
+        gameState = GameState.CanStarted
         return "报名成功"
     }
 
     fun signUp(playerID: Long, bet: Int): String {
         if (findPlayer(playerID)) return "你已经报过名了"
         if (playerList.size >= 6) return "人数已满,使用发牌命令开始游戏"
-
-        playerList.add(Player(playerID, At(playerID), ante = bet))
+        playerList.add(Player(playerID, ante = bet))
+        gameState = GameState.CanStarted
         return "报名成功"
     }
 
@@ -140,11 +144,12 @@ class Game21 {
     }
 
     fun stop(): Message {
+        next++
         next = nextPlayer()
         return if (next != 0)
             buildMessageChain {
                 +"轮到"
-                +playerList[next].atPlayer
+                +At(playerList[next].playerID)
                 +"行动"
             }
         else finalDeal()

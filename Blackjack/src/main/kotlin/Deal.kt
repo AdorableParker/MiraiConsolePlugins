@@ -14,7 +14,8 @@ object Deal : SimpleCommand(
 
         when (table?.gameState) {
             null, GameState.Closure -> sendMessage("游戏尚未开始,请使用开局命令开始游戏")
-            GameState.CanRegister, GameState.Started -> sendMessage(table.deal())
+            GameState.CanRegister -> sendMessage("还没人报名呢,请使用报名命令报名加入")
+            GameState.CanStarted, GameState.Processing -> sendMessage(table.deal())
         }
     }
 }

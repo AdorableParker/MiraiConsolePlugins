@@ -14,8 +14,8 @@ object Shuffle : SimpleCommand(
 
         when (table?.gameState) {
             null, GameState.Closure -> sendMessage("游戏尚未开始,请使用开局命令开始游戏")
-            GameState.CanRegister -> sendMessage("还没发牌呢,使用发牌命令开始游戏")
-            GameState.Started -> {
+            GameState.CanRegister,GameState.CanStarted -> sendMessage("还没发牌呢,使用发牌命令开始游戏")
+            GameState.Processing -> {
                 if (user.id != table.playerList[table.next].playerID) sendMessage("还没轮到你行动呢") else {
                     table.shuffle()
                     sendMessage("洗牌完成")

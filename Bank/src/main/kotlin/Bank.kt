@@ -9,18 +9,7 @@ import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.utils.info
 import java.time.LocalDateTime
 
-object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()
-//    JvmPluginDescription(
-//        id = "org.nymph.bank",
-//        name = "Bank",
-//        version = "0.1.0",
-//    ) {
-//        author("parker")
-//        info("""银行-TB插件子功能模块""")
-//        dependsOn("org.nymph.personal-account:[0.1.0,2.0.0)")
-//        dependsOn("org.nymph.job-broadcast:[0.1.0,2.0.0)")
-//    }
-) {
+object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
     override fun onEnable() {
         logger.info { "$info-已加载" }
         BankVault.reload()
@@ -35,7 +24,8 @@ object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()
         ).addJob(LocalDateTime.now().dayOfYear * 10000 + 1800)
 
         GlobalEventChannel.subscribeAlways<PayrollEvent> {
-            val cardinality = BankVault.depositorDeposit / BankVault.depositorMap.size / 1000
+            if (BankVault.depositorMap.isEmpty()) return@subscribeAlways
+            val cardinality = BankVault.depositorDeposit / 1000 / BankVault.depositorMap.size
             BankVault.depositorMap.forEach{ (_,depositor)->
                 if (depositor.days>=10){
                     depositor.deposit += cardinality + 500 * depositor.level

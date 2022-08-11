@@ -1,12 +1,10 @@
 package org.nymph
 
 import kotlinx.serialization.Serializable
-import net.mamoe.mirai.message.data.Message
 
 @Serializable
 class Player(
     val playerID: Long,
-    val atPlayer: Message,
     val ante: Int = 100,
     val handCard: MutableList<String> = mutableListOf(),
     var odds: Double = -1.0,

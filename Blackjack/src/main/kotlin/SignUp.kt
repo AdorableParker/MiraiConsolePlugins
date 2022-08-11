@@ -14,8 +14,8 @@ object SignUp : SimpleCommand(
 
         when (table?.gameState) {
             null, GameState.Closure -> sendMessage("游戏尚未开局,请使用开局命令开始游戏")
-            GameState.Started -> sendMessage("游戏已经开始了,等下一局吧")
-            GameState.CanRegister -> sendMessage(table.signUp(user.id))
+            GameState.Processing  -> sendMessage("游戏已经开始了,等下一局吧")
+            GameState.CanRegister, GameState.CanStarted -> sendMessage(table.signUp(user.id))
         }
     }
 
@@ -35,8 +35,8 @@ object SignUp : SimpleCommand(
         val table = BlackjackData.table[group.id]
         when (table?.gameState) {
             null, GameState.Closure -> sendMessage("游戏尚未开局,请使用开局命令开始游戏")
-            GameState.Started -> sendMessage("游戏已经开始了,等下一局吧")
-            GameState.CanRegister -> sendMessage(table.signUp(user.id, bet))
+            GameState.Processing -> sendMessage("游戏已经开始了,等下一局吧")
+            GameState.CanRegister, GameState.CanStarted -> sendMessage(table.signUp(user.id, bet))
         }
     }
 }

@@ -16,7 +16,8 @@ import java.net.URL
 import java.time.LocalDateTime
 
 object WifeToday : SimpleCommand(
-    GroupWife, "WifeToday", "今日老婆", description = "每天一个群老婆"
+    GroupWife, "WifeToday", "今日老婆",
+    description = "每天一个群老婆"
 ) {
     override val usage: String = "${CommandManager.commandPrefix}今日老婆"
 

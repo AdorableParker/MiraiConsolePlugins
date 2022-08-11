@@ -2,7 +2,7 @@ package org.nymph
 
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
-import org.nymph.JobData.timeAxis
+import org.nymph.JobBroadcast.timeAxis
 
 
 object JobQuery : SimpleCommand(
