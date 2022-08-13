@@ -1,6 +1,6 @@
 id: org.nymph.bank
 name: Bank
-version: 0.1.0
+version: 0.1.1
 dependencies:
   - "org.nymph.personal-account:[0.1.0,2.0.0)"
   - "org.nymph.job-broadcast:[0.1.0,2.0.0)"

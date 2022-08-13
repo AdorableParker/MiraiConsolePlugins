@@ -16,6 +16,8 @@ object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
         Savings.register()
         Withdraw.register()
         LogOn.register()
+        Audit.register()
+        UpgradeAccount.register()
 
         PayrollEvent(
             intervals = 1_00_00,
@@ -28,7 +30,7 @@ object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
             val cardinality = BankVault.depositorDeposit / 1000 / BankVault.depositorMap.size
             BankVault.depositorMap.forEach{ (_,depositor)->
                 if (depositor.days>=10){
-                    depositor.deposit += cardinality + 500 * depositor.level
+                    depositor.deposit += cardinality + 400 * depositor.level
                     depositor.days = 0
                 } else {
                     depositor.days++
@@ -42,5 +44,7 @@ object Bank : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
         Savings.unregister()
         Withdraw.unregister()
         LogOn.unregister()
+        Audit.unregister()
+        UpgradeAccount.unregister()
     }
 }

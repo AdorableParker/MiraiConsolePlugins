@@ -1,7 +1,10 @@
 package org.nymph
 
 import kotlinx.serialization.Serializable
-import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.Message
+import net.mamoe.mirai.message.data.MessageChainBuilder
+import net.mamoe.mirai.message.data.buildMessageChain
 
 @Serializable
 class Game21 {
@@ -16,6 +19,7 @@ class Game21 {
         return playerList.find { it.playerID == playerID } != null
     }
 
+    /** 单轮结算 */
     private fun settlement(): Message {
         val info = MessageChainBuilder()
         info.add("本轮结算:\n庄家\t手牌:${playerList[0].handCard.drop(1)}+[暗牌]\n")
@@ -30,13 +34,12 @@ class Game21 {
             }
         }
         next = nextPlayer()
-        if (next != 0) {
+        return if (next != 0) {
             info.add("----------\n轮到")
             info.add(At(playerList[next].playerID))
             info.add("行动")
+            info.build()
         } else finalDeal()
-
-        return info.build()
     }
 
     private fun nextPlayer(): Int {
@@ -46,6 +49,7 @@ class Game21 {
         return 0
     }
 
+    /** 首轮发牌 */
     private fun firstDeal(): Message {
         deck.shuffle()
         gameState = GameState.Processing
@@ -53,21 +57,28 @@ class Game21 {
             playerList[index % playerList.size].handCard.add(deck.removeFirst())
         }
         next = 1
-        return if (playerList[0].sum() == 21) chipSettlement() else settlement()
+        return if (playerList[0].sum() == 21) {
+            chipSettlement()
+            announceResults()
+        } else {
+            settlement()
+        }
     }
 
+    /** 庄家取牌 */
     private fun finalDeal(): Message {
         val dealer = playerList[0]
         while (dealer.sum() < 17) dealer.handCard.add(deck.removeFirst())
-        return chipSettlement()
+        chipSettlement()
+        return announceResults()
     }
 
-    private fun chipSettlement(): Message {
-
+    /** 赔率结算 */
+    private fun chipSettlement() {
         val (bj, other) = playerList.partition { it.nowPoint == 21 && it.handCard.size == 2 }
         if (bj.find { it.playerID == 0L } != null) {
             bj.forEach { it.odds = 0.0 }
-            return PlainText("平局")
+            return
         } else bj.forEach { it.odds = 1.5 }
 
         if (playerList[0].nowPoint <= 21) {
@@ -79,26 +90,29 @@ class Game21 {
             val win = other.filter { it.nowPoint <= 21 }
             win.forEach { it.odds = 1.0 }
         }
-        val info = MessageChainBuilder()
+    }
+
+    /** 结果汇报 */
+    private fun announceResults(): Message {
+        val results = MessageChainBuilder()
         for (player in playerList) {
             if (player.playerID == 0L) {
-                info.add("庄家:\t牌型:${player.handCard}\n共计${player.nowPoint}点\n")
+                results.add("庄家\t牌型:${player.handCard}\n共计${player.nowPoint}点\n----------\n")
                 continue
             }
-            info.add(At(player.playerID))
-            info.add("\n牌型:${player.handCard}\n共计${player.sum()}点")
+            results.add(At(player.playerID))
+            results.add("\n牌型:${player.handCard}\n共计${player.sum()}点")
             val account = Account.user.getOrPut(player.playerID) { UserAccount(0, 0, 200, 0) }
             val chips = (player.odds * player.ante).toInt()
             account.gold += chips
-            info.add(At(player.playerID))
-            info.add("\t筹码结算:$chips\n")
+            results.add("\t筹码结算:$chips\n")
         }
         gameState = GameState.Closure
-
-        return info.build()
+        return results.build()
     }
 
     fun init() {
+        next = -1
         deck.clear()
         deck.addAll(
             arrayOf(
@@ -112,6 +126,7 @@ class Game21 {
                 "A", "2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K"
             )
         )
+        playerList.clear()
         playerList.add(Player(0))
         gameState = GameState.CanRegister
     }

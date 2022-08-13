@@ -13,18 +13,21 @@ object Withdraw : SimpleCommand(
 
         val account = Account.user.getOrPut(user.id) { UserAccount(0, 0, 200, 0) }
 
-        account.gold += value
-        when (withdraw(user.id, value)) {
-            404 -> sendMessage("账户未开户")
-            403 -> sendMessage("存款不足")
-            200 -> sendMessage("取款完成")
-        }
+        sendMessage(when (withdraw(user.id, value)) {
+            404 -> "账户未开户"
+            403 -> "存款不足"
+            200 -> {
+                account.gold += value
+                "取款完成"
+            }
+            else -> "系统异常"
+        })
     }
 
     private fun withdraw(depositorID: Long, value: Int): Int {
-        val account = BankVault.depositorMap.getOrElse(depositorID) { return 404 }
-        if (account.deposit < value) return 403
-        account.deposit -= value
+        val bankAccount = BankVault.depositorMap.getOrElse(depositorID) { return 404 }
+        if (bankAccount.deposit < value) return 403
+        bankAccount.deposit -= value
         BankVault.depositorDeposit -= value
         return 200
     }

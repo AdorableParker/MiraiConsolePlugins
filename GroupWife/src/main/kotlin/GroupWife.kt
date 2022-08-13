@@ -11,7 +11,7 @@ object GroupWife : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.group-wife",
         name = "GroupWife",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""群老婆-TB插件子功能模块""")
@@ -19,6 +19,8 @@ object GroupWife : KotlinPlugin(
 ) {
     override fun onEnable() {
         logger.info { "$info-已加载" }
+        GroupWifeData.reload()
+
         WifeToday.register()
     }
 
