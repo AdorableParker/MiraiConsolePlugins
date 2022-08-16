@@ -35,3 +35,4 @@ NekoGenGo|喵语翻译
 PersonalAccount|个人账户
 PokeEcho|戳一戳回复
 Tarot|每日塔罗
+SearchByImage|以图搜图
