@@ -10,8 +10,6 @@ group = "org.nymph"
 version = "0.1.0"
 
 repositories {
-    maven("https://maven.aliyun.com/repository/public")
-    maven("https://jitpack.io")
     mavenCentral()
 }
 

@@ -28,6 +28,7 @@
 插件名|解释
 -:|-|
 AcgImage|随机图片
+AzurLaneLibrary|碧蓝航线数据库
 Bank|银行
 Blackjack|21点
 GroupWife|群老婆
