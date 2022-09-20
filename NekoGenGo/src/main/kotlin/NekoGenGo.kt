@@ -11,7 +11,7 @@ object NekoGenGo : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.neko-gengo",
         name = "NekoGenGo",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""喵语翻译-TB插件子功能模块""")
