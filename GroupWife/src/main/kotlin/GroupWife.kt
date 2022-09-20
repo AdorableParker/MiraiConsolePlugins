@@ -11,7 +11,7 @@ object GroupWife : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.group-wife",
         name = "GroupWife",
-        version = "0.1.1",
+        version = "0.1.2",
     ) {
         author("parker")
         info("""群老婆-TB插件子功能模块""")
