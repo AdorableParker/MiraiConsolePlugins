@@ -15,7 +15,7 @@ object JobBroadcast : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.job-broadcast",
         name = "JobBroadcast",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""定时任务-TB插件子功能模块""")
