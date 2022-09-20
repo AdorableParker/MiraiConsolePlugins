@@ -22,7 +22,7 @@ object PokeEcho : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.poke-echo",
         name = "PokeEcho",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""戳一戳回复-TB插件子功能模块""")
