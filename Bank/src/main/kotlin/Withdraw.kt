@@ -1,12 +1,16 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 
 
 object Withdraw : SimpleCommand(
     Bank, "Withdraw", "取款",
+    description = "取出存款"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}取款 <金额>\t#$description"
+
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(value: Int) {
         if (group.botMuteRemaining > 0) return

@@ -1,11 +1,14 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 
 object UpgradeAccount : SimpleCommand(
     Bank, "UpgradeAccount", "申请升级",
+    description = "申请提升账户等级"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}申请升级\t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
@@ -27,6 +30,6 @@ object UpgradeAccount : SimpleCommand(
             account.level++
             account.deposit -= account.level*1500
             sendMessage("申请批准")
-        }else sendMessage("申请驳回")
+        }else sendMessage("存款过低,申请驳回")
     }
 }
