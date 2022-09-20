@@ -12,7 +12,7 @@ object Tarot : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.tarot",
         name = "tarot",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""每日塔罗-TB插件子功能模块""")

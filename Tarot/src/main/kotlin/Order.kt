@@ -1,5 +1,6 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.PlainText
@@ -10,8 +11,10 @@ import seed.Cycle
 import seed.Seed
 
 object Order : SimpleCommand(
-    Tarot,"tarot","每日塔罗"
-){
+    Tarot,"tarot","每日塔罗",
+    description = "每日一塔罗"
+) {
+    override val usage: String = "${CommandManager.commandPrefix}每日塔罗\t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
 
