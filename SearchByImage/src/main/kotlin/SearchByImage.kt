@@ -9,7 +9,7 @@ object SearchByImage : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.search-by-image",
         name = "SearchByImage",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""搜图-TB插件子功能模块""")

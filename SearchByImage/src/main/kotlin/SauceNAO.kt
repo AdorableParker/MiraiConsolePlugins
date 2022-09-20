@@ -20,7 +20,7 @@ object SauceNAO : SimpleCommand(
     SearchByImage, "SauceNAO", "搜图",
     description = "以图搜图"
 ) {
-    override val usage: String = "${CommandManager.commandPrefix}搜图 [图片]"
+    override val usage: String = "${CommandManager.commandPrefix}搜图 [图片]\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(image: Image) {
