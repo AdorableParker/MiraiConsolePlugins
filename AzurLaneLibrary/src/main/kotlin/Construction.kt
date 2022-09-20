@@ -9,7 +9,7 @@ import org.nymph.Construction.listType
 object Construction : SimpleCommand(
     AzurLaneLibrary, "Construction", "建造时间", description = "碧蓝航线建造时间查询"
 ) {
-    override val usage: String = "${CommandManager.commandPrefix}建造时间 [时间|船名]"
+    override val usage: String = "${CommandManager.commandPrefix}建造时间 [时间|船名]\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(uncheckedIndex: String) {
