@@ -1,11 +1,14 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 
 object SignUp : SimpleCommand(
     Blackjack, "SignUp", "报名",
+    description = "投注报名参加"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}报名 [投注金额]\t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return

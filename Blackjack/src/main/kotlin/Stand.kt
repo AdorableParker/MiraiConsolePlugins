@@ -1,11 +1,14 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 
 object Stand : SimpleCommand(
     Blackjack, "Stand", "停牌",
+    description = "结束回合"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}停牌\t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
