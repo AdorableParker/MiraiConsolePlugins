@@ -1,5 +1,6 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.sendTo
@@ -10,8 +11,9 @@ import org.nymph.Dialogue.logger
 
 object Teaching : SimpleCommand(
     Dialogue, "teaching","教学",
-    description = "AI功能",
+    description = "问答教学"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}教学 <问题> <答案>\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(question: String, answer: String) {
@@ -30,7 +32,7 @@ object Teaching : SimpleCommand(
         }
 
         SQLiteLink.executeDMLorDDL {
-            "INSERT Corpus COMPANY (answer,question,fromGroup) VALUES ('$answer', '$question', ${group.id} );"
+            "INSERT INTO Corpus (answer,question,fromGroup) VALUES ('$answer', '$question', ${group.id} );"
         }.let(logger::info)
         if ((0..4).random() == 0) {
             val audio = getResourceAsStream("雷-原来如此.amr")?.toExternalResource()

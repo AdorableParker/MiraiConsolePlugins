@@ -1,12 +1,15 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import org.nymph.DialogueData.triggerProbability
 
 object SetTriggerProbability : SimpleCommand(
-    Dialogue, "SetTriggerProbability", "设定聊天概率",
+    Dialogue, "SetTriggerProbability", "设定对话概率",
+    description = "对话概率设定"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}设定对话概率 <概率值>\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(probability: Int) {

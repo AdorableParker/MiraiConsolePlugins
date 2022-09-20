@@ -20,7 +20,7 @@ import org.nymph.DialogueData.triggerProbability
 object Dialogue : KotlinPlugin(JvmPluginDescription(
     id = "org.nymph.dialogue",
     name = "Dialogue",
-    version = "0.1.0",
+    version = "0.1.1",
 ) {
     author("parker")
     info("""聊天问答-TB插件子功能模块""")
@@ -31,9 +31,6 @@ object Dialogue : KotlinPlugin(JvmPluginDescription(
     override fun onEnable() {
         logger.info { "$info-已加载" }
         DialogueData.reload()
-//        val str = ""
-//        logger.info { ToAnalysis.parse(str).toString() }
-//        KeyWordComputer<ToAnalysis>()
         if (initialization) {
             SQLiteLink.executeDMLorDDL(
                 """
@@ -74,7 +71,7 @@ object Dialogue : KotlinPlugin(JvmPluginDescription(
                 group.sendMessage(answer)
             }
             atBot().not().invoke {
-                if (group.botMuteRemaining > 0 && (1..100).random() >= triggerProbability.getOrPut(group.id) { 33 }) return@invoke
+                if (group.botMuteRemaining > 0 && (1..100).random() <= triggerProbability.getOrPut(group.id) { 33 }) return@invoke
                 AI.dialogue(group.id, message.content.trim())?.let { answer ->
                     group.sendMessage(answer)
                 }
