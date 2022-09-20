@@ -11,7 +11,7 @@ object PersonalAccount : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.personal-account",
         name = "PersonalAccount",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""个人账户-TB插件子功能模块""")

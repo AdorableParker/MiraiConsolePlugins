@@ -1,12 +1,15 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.contact.nameCardOrNick
 
 object CubeCoinRank : SimpleCommand(
-    PersonalAccount, "CubeCoinRank", "金币排行",
+    PersonalAccount, "CubeCoinRank", "魔方排行",
+    description = "本群用户魔方排行"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}魔方排行\t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
