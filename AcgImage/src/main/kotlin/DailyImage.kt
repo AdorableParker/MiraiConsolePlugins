@@ -3,9 +3,11 @@ package org.nymph
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.mamoe.mirai.console.command.CommandManager
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.isRegistered
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.buildMessageChain
+import net.mamoe.mirai.message.sourceTime
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import net.mamoe.mirai.utils.error
 import okhttp3.OkHttpClient
@@ -72,8 +74,7 @@ object DailyImage : SimpleCommand(
     private fun getImageData(url: String): Pair<String?, String> {
         return runCatching {
             val client = OkHttpClient().newBuilder().build()
-            val request: Request =
-                Request.Builder().header("referer", "https://www.pixiv.net/").url(url).method("GET", null).build()
+            val request: Request = Request.Builder().url(url).method("GET", null).build()
             Pair(null, client.newCall(request).execute().body!!.string())
         }.onFailure {
             Pair(

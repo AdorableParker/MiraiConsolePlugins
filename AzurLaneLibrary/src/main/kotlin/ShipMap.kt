@@ -60,7 +60,7 @@ object ShipMap : SimpleCommand(
                     { it.originalName },
                     { it.alias }
                 )
-            ).joinToString("", "名字包含有 $name 的可打捞舰船有:") {
+            ).joinToString("", "名字包含有 $name 的可打捞舰船有:\n") {
                 "船名：${it.originalName}[${it.alias}]-${it.rarity}\t可打捞地点:\n${format(it.mapCode)}${"${it.special}\n"}"
             }
         }
@@ -82,7 +82,7 @@ object ShipMap : SimpleCommand(
                     { it.originalName },
                     { it.alias }
                 )
-            ).joinToString("", "可在 $index 打捞的舰船有:") { "${it.originalName}[${it.alias}]-${it.rarity}" }
+            ).joinToString("", "可在 $index 打捞的舰船有:\n") { "${it.originalName}[${it.alias}]-${it.rarity}" }
         }
     }
 }
