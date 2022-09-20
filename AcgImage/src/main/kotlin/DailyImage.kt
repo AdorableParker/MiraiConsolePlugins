@@ -72,7 +72,8 @@ object DailyImage : SimpleCommand(
     private fun getImageData(url: String): Pair<String?, String> {
         return runCatching {
             val client = OkHttpClient().newBuilder().build()
-            val request: Request = Request.Builder().url(url).method("GET", null).build()
+            val request: Request =
+                Request.Builder().header("referer", "https://www.pixiv.net/").url(url).method("GET", null).build()
             Pair(null, client.newCall(request).execute().body!!.string())
         }.onFailure {
             Pair(

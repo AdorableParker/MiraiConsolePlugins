@@ -8,7 +8,7 @@ object SetProxy : SimpleCommand(
     AcgImage, "SetProxy", "设定代理域名",
     description = "设定 Pixiv 代理服务器域名"
 ) {
-    override val usage = "${CommandManager.commandPrefix}设定代理域名\t#$description"
+    override val usage = "${CommandManager.commandPrefix}设定代理域名 [代理域名]\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(proxy: String) {
