@@ -11,7 +11,7 @@ object T2JS : SimpleCommand(
     description = "文本转日语"
 ) {
     private val speakers = mapOf("宁宁" to 0, "爱瑠" to 1, "芳乃" to 2, "茉子" to 3, "丛雨" to 4, "小春" to 5, "七海" to 6)
-    override val usage = "${CommandManager.commandPrefix}说日语\t#$description [语言支持:${speakers.keys.joinToString()}]"
+    override val usage = "${CommandManager.commandPrefix}说日语 [谁说] [说什么]\t#$description [语言支持:${speakers.keys.joinToString()}]"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(who: String, what: String) {

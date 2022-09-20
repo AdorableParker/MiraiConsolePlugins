@@ -18,7 +18,7 @@ object T2CS:SimpleCommand(
         "芭芭拉", "雷电将军", "神里绫华", "神里绫人", "罗莎莉亚", "八重神子", "荒泷一斗",
         "九条裟罗", "达达利亚", "枫原万叶", "珊瑚宫心海", "鹿野院平藏"
     )
-    override val usage = "${CommandManager.commandPrefix}说中文\t#$description [语言支持:${speakers.joinToString()}]"
+    override val usage = "${CommandManager.commandPrefix}说中文 [谁说] [说什么]\t#$description [语言支持:${speakers.joinToString()}]"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(who:String, what:String){
         if (group.botMuteRemaining > 0) return
