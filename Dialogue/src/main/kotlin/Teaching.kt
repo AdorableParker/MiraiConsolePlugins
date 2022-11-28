@@ -5,9 +5,10 @@ import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.sendTo
 import net.mamoe.mirai.utils.ExternalResource.Companion.toExternalResource
-import org.nymph.Dialogue.SQLiteLink
+//import org.nymph.Dialogue.SQLiteLink
 import org.nymph.Dialogue.getResourceAsStream
-import org.nymph.Dialogue.logger
+//import org.nymph.Dialogue.logger
+import sqliteJDBC.SQLResult
 
 object Teaching : SimpleCommand(
     Dialogue, "teaching","教学",
@@ -18,11 +19,11 @@ object Teaching : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(question: String, answer: String) {
         if (group.botMuteRemaining > 0) return
-        val result =
-            SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$question' AND answer='$answer' AND fromGroup=${group.id};" }
+        val result = SQLResult("Testing", listOf<CorpusData>())
+//            SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$question' AND answer='$answer' AND fromGroup=${group.id};" }
         when {
             result.error != null -> {
-                sendMessage(result.error!!)
+                sendMessage(result.error)
                 return
             }
             result.data.isNotEmpty() -> {
@@ -31,9 +32,9 @@ object Teaching : SimpleCommand(
             }
         }
 
-        SQLiteLink.executeDMLorDDL {
-            "INSERT INTO Corpus (answer,question,fromGroup) VALUES ('$answer', '$question', ${group.id} );"
-        }.let(logger::info)
+//        SQLiteLink.executeDMLorDDL {
+//            "INSERT INTO Corpus (answer,question,fromGroup) VALUES ('$answer', '$question', ${group.id} );"
+//        }.let(logger::info)
         if ((0..4).random() == 0) {
             val audio = getResourceAsStream("雷-原来如此.amr")?.toExternalResource()
             audio.use { resource -> resource?.let { group.uploadAudio(it).sendTo(group) } }

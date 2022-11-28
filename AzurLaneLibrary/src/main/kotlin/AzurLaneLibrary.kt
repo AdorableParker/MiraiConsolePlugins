@@ -7,11 +7,9 @@ import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.plugin.info
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
-import net.mamoe.mirai.console.plugin.version
 import net.mamoe.mirai.utils.error
 import net.mamoe.mirai.utils.info
 import org.nymph.Data.initialization
-import org.nymph.Data.version
 
 
 object AzurLaneLibrary : KotlinPlugin(

@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.nymph"
-version = "0.1.1"
+version = "0.1.1-test"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public")
@@ -16,7 +16,8 @@ repositories {
 }
 
 dependencies {
+    implementation("org.xerial:sqlite-jdbc:3.39.3.0")
 //    implementation (files("lib/ansj_seg-5.1.6.jar"))
-    implementation("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC:0.3.10")
-    "shadowLink"("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC")
+//    implementation("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC:0.3.10")
+//    "shadowLink"("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC")
 }
