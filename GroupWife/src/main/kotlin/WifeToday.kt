@@ -5,10 +5,7 @@ import kotlinx.coroutines.withContext
 import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
-import net.mamoe.mirai.contact.Group
-import net.mamoe.mirai.contact.Member
-import net.mamoe.mirai.contact.getMember
-import net.mamoe.mirai.contact.nameCardOrNick
+import net.mamoe.mirai.contact.*
 import net.mamoe.mirai.message.data.Message
 import net.mamoe.mirai.message.data.MessageChainBuilder
 import net.mamoe.mirai.message.data.PlainText
@@ -29,7 +26,6 @@ object WifeToday : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
-
         if (LocalDateTime.now().dayOfYear != groupWifeUpdate) cleanList(LocalDateTime.now().dayOfYear)
 
         val groupData = wifeGroupMap.getOrPut(group.id) { GroupData() }

@@ -40,3 +40,4 @@ PersonalAccount|个人账户
 PokeEcho|戳一戳回复
 SearchByImage|以图搜图
 Tarot|每日塔罗
+hitokot|一言

@@ -45,13 +45,21 @@ class GroupData {
         if (index != -1) return pair[index - index % 2 * 2 + 1]
 
         val candidate = mutableListOf<NormalMember>()
-        for (it in members) {
-            if (it.id in (solitary + pair)) {
+
+//        members.forEach {
+//            GroupWife.logger.debug{"${it.id}"}
+//        }
+//        (solitary + pair).forEach {
+//            GroupWife.logger.debug { "$it" }
+//        }
+
+        for (it in members.sortedByDescending(NormalMember::lastSpeakTimestamp)) {
+            if (it.id !in (solitary + pair)) {
                 candidate.add(it)
             }
             if (candidate.size >= 10) break
         }
-        return candidate.sortedByDescending(NormalMember::lastSpeakTimestamp).random().addWife(userID)
+        return candidate.random().addWife(userID)
     }
 
     private fun NormalMember.addWife(userID: Long): Long? {
