@@ -1,0 +1,7 @@
+id: org.nymph.dynamic-push
+name: DynamicPush
+version: 0.1.0
+dependencies:
+  - "org.nymph.job-broadcast:[0.1.2,2.0.0)"
+author: parker
+info: B站动态-TB插件子功能模块

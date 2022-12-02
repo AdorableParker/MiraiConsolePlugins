@@ -15,7 +15,7 @@ object JobBroadcast : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.job-broadcast",
         name = "JobBroadcast",
-        version = "0.1.1",
+        version = "0.1.2",
     ) {
         author("parker")
         info("""定时任务-TB插件子功能模块""")
@@ -45,8 +45,23 @@ object JobBroadcast : KotlinPlugin(
             timeAxis.filter { serialNumber >= it.key }.forEach { (key, jobList) ->
                 for (jobEvent in jobList) {
                     jobEvent.broadcast()
-                    if (jobEvent.intervals >= 0) timeAxis.getOrPut(key + jobEvent.intervals) { mutableListOf() }
-                        .add(jobEvent)
+                    if (jobEvent.intervals >= 0) {
+                        val t = key + jobEvent.intervals
+                        var m = t % 100
+                        var h = t / 100 % 100
+                        var d = t / 10000
+
+                        if (m >= 60) {
+                            m %= 60
+                            h++
+                        }
+                        if (h >= 24) {
+                            h %= 24
+                            d++
+                        }
+                        if (d >= 366) d %= 366
+                        timeAxis.getOrPut(d * 10000 + h * 100 + m) { mutableListOf() }.add(jobEvent)
+                    }
                 }
                 timeAxis.remove(key)
             }
