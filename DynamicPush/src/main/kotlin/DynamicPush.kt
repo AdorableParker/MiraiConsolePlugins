@@ -8,6 +8,8 @@ import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.utils.info
+import net.mamoe.mirai.utils.warning
+import org.nymph.Dynamic.getDynamic
 import org.nymph.DynamicPushData.subscriptionList
 import org.nymph.DynamicPushData.timeStampOfDynamic
 import org.nymph.DynamicPushSetting.BotID
@@ -21,6 +23,9 @@ object DynamicPush : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
         DynamicPushData.reload()
 
         SendDynamic.register()
+        SubscriptionDynamics.register()
+        Unsubscribe.register()
+        SetBotID.register()
 
         PushEvent(
             intervals = 3,
@@ -29,10 +34,16 @@ object DynamicPush : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
         ).addJob(LocalDateTime.now().dayOfYear * 10000 + LocalDateTime.now().hour * 100 + LocalDateTime.now().minute)
 
         GlobalEventChannel.subscribeAlways<PushEvent> {
-            val bot = Bot.getInstance(BotID)
-            for ((uid, timestamp) in timeStampOfDynamic) {
-                val dynamicInfo = SendDynamic.getDynamic(uid, 0, flag = true)
-                if (dynamicInfo.timestamp - timestamp <= 0L) continue
+            val bot = runCatching {
+                Bot.getInstance(BotID)
+            }.getOrElse {
+                logger.warning { "获取Bot对象异常,请检查BotID" }
+                return@subscribeAlways
+            }
+
+            for ((uid, _) in timeStampOfDynamic) {
+                val dynamicInfo = getDynamic(uid, 0, flag = true)
+                if (dynamicInfo.timestamp == 0L) continue
                 subscriptionList[uid]?.forEach { group ->
                     val g = bot.getGroup(group)
                     if (g != null && g.botMuteRemaining <= 0) g.sendMessage("${dynamicInfo.name}:\n${dynamicInfo.text}")
@@ -43,5 +54,8 @@ object DynamicPush : KotlinPlugin(JvmPluginDescription.loadFromResource()) {
 
     override fun onDisable() {
         SendDynamic.unregister()
+        SubscriptionDynamics.unregister()
+        Unsubscribe.unregister()
+        SetBotID.unregister()
     }
 }

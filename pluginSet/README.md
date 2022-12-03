@@ -41,4 +41,5 @@ PokeEcho|戳一戳回复
 SearchByImage|以图搜图
 Tarot|每日塔罗
 hitokot|一言
-DynamicPush
+DynamicPush|动态查询
+

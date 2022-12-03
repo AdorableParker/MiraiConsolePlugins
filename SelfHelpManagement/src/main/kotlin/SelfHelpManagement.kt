@@ -27,6 +27,7 @@ object SelfHelpManagement : KotlinPlugin(
         logger.info { "$info-已加载" }
         GaG.register()
         TitleToApply.register()
+        SetEnableReporting.register()
 
         this.globalEventChannel().subscribeAlways<Event> {
             when (this) {
@@ -57,6 +58,7 @@ object SelfHelpManagement : KotlinPlugin(
     override fun onDisable() {
         GaG.unregister()
         TitleToApply.unregister()
+        SetEnableReporting.unregister()
     }
 }
 
