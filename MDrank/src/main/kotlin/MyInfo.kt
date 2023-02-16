@@ -57,7 +57,7 @@ object MyInfo : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
-        val userAccount = MDAccountData.MDAccountMap.get(user.id)
+        val userAccount = MDAccountData.MDAccountMap[user.id]
         if (userAccount == null) sendMessage("尚未绑定账号,请先绑定")
         else sendMessage(getUserInfo(userAccount))
     }
@@ -76,7 +76,7 @@ object MyInfo : SimpleCommand(
             List(plays.size) {
                 Record(
                     plays[it].int("score")!!,
-                    plays[it].get("acc") as Number,
+                    plays[it]["acc"] as Number,
                     plays[it].int("i")!!+1,
                     plays[it].int("sum")!!+1,
                     plays[it].string("uid")!!,
