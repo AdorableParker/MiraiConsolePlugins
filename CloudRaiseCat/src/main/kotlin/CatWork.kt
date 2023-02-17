@@ -7,8 +7,8 @@ object CatWork : SimpleCommand(CloudRaiseCat, "CatWork", "猫猫打工", descrip
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
-        val userHome = CloudCatData.cloudCatList.getOrPut(user.id){ UserHome() }
-        if(userHome.cat == null){
+        val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
+        if (userHome.cat == null) {
             sendMessage("铲屎官你还没有属于你的猫猫哦，快去猫店买一只吧")
             return
         }

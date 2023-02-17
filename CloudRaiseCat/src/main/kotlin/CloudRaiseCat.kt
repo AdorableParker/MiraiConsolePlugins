@@ -26,7 +26,7 @@ object CloudRaiseCat : KotlinPlugin(JvmPluginDescription(
         FeedTheCat.register()
         CatWork.register()
         RuaCat.register()
-//        CatPK.register()
+        CatPK.register()
         CatState.register()
     }
 
@@ -36,13 +36,9 @@ object CloudRaiseCat : KotlinPlugin(JvmPluginDescription(
         FeedTheCat.unregister()
         CatWork.unregister()
         RuaCat.unregister()
-//        CatPK.unregister()
+        CatPK.unregister()
         CatState.unregister()
     }
 }
 
-
-//object CatPK : SimpleCommand(
-//    CloudRaiseCat, "CatPK", "猫猫PK", description = "猫猫PK"
-//) {}
 

@@ -20,10 +20,10 @@ object CatState : SimpleCommand(
             return
         }
         sendMessage(buildMessageChain {
-            + (withContext(Dispatchers.IO) {
+            +(withContext(Dispatchers.IO) {
                 URL(userHome.cat!!.picUrl).openConnection().getInputStream()
             }).uploadAsImage(group)
-            + userHome.cat!!.getCatInfo()
+            +userHome.cat!!.getCatInfo()
         })
     }
 }

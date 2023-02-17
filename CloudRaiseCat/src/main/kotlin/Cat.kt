@@ -4,7 +4,7 @@ import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
-class Cat(var name: String, private val catType: String, val picUrl: String, private val uid:Long) {
+class Cat(var name: String, private val catType: String, val picUrl: String, private val uid: Long) {
 
     companion object {
         val CatType = mapOf(
@@ -81,9 +81,15 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
     private var satiety: Double = (1..900).random() / 10.0 // 饱食度
     private var foodBasin: Double = 0.0
     private var workEnd: Long = 0 // 打工结束时间
-    private var workTime:Int = 0
+    private var workTime: Int = 0
     private var arenaTime: Long = 0 // 上次PK时间
     private var lastInteractionTime: Long = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
+
+    fun getWeight() = weight
+
+    fun treatment(v: Int): Boolean = if (weight > v) {
+        weight -= v; true
+    } else false
 
     private fun eatFood(needEat: Double) {
         val canEaten = 100 - satiety
@@ -99,6 +105,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
     fun upDataCatInfo(): String? {
         if (workEnd != 0L) {
             working() // 工作结算
+            lastInteractionTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
             return null
         }
         /** 正常结算**/
@@ -127,10 +134,10 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
             moodChange + mood < 0 -> 0
             else -> moodChange + mood
         }
-
+        lastInteractionTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
         return when {
             weight > 200 -> "你的猫猫因为太肥，胖死惹"
-            weight < 0 -> "你的猫猫因为太久没有吃到饭，被饿死了"
+            weight <= 0 -> "你的猫猫因为太久没有吃到饭，被饿死了"
             else -> null
         }
     }
@@ -162,7 +169,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
             eatFood((10..20).random() / 10.0) // 吃工作餐
             changeMood((-20..20).random()) // 工作心情变化
             workEnd = 0L
-            account.gold += (10..workTime*11).random()
+            account.gold += (10..workTime * 11).random()
             false
         }
     }
