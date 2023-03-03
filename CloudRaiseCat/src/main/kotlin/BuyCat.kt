@@ -20,7 +20,8 @@ object BuyCat : SimpleCommand(
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
         val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
-        if (userHome.cat != null) {
+        val uhCat = userHome.cat
+        if (uhCat != null) {
             sendMessage("你居然背着你家喵喵出来找小三!")
             when ((1..100).random()) {
                 in 1..5 -> {
@@ -35,7 +36,7 @@ object BuyCat : SimpleCommand(
                 }
 
                 else -> {
-                    userHome.cat!!.changeMood(-10)
+                    uhCat.changeMood(-10)
                     sendMessage("你家猫猫很生气!(心情-10)")
                 }
             }

@@ -82,7 +82,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
     private var foodBasin: Double = 0.0
     private var workEnd: Long = 0 // 打工结束时间
     private var workTime: Int = 0
-    private var arenaTime: Long = 0 // 上次PK时间
+    var arenaTime: Long = 0 // 上次PK时间
     private var lastInteractionTime: Long = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)
 
     fun getWeight() = weight

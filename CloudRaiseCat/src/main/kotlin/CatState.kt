@@ -15,15 +15,16 @@ object CatState : SimpleCommand(
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
         val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
-        if (userHome.cat == null) {
+        val uhCat = userHome.cat
+        if (uhCat == null) {
             sendMessage("铲屎官你还没有属于你的主子喔,快去买一只吧!")
             return
         }
         sendMessage(buildMessageChain {
             +(withContext(Dispatchers.IO) {
-                URL(userHome.cat!!.picUrl).openConnection().getInputStream()
+                URL(uhCat.picUrl).openConnection().getInputStream()
             }).uploadAsImage(group)
-            +userHome.cat!!.getCatInfo()
+            +uhCat.getCatInfo()
         })
     }
 }

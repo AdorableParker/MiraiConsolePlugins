@@ -9,19 +9,20 @@ object FeedTheCat : SimpleCommand(CloudRaiseCat, "FeedTheCat", "喂猫", descrip
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
         val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
-        if (userHome.cat == null) {
+        val uhCat = userHome.cat
+        if (uhCat == null) {
             sendMessage("铲屎官你还没有属于你的主子喔,快去买一只吧!")
             return
         }
-        val r = userHome.cat!!.upDataCatInfo()
+        val r = uhCat.upDataCatInfo()
         if (r.isNullOrEmpty()) {
             when {
-                userHome.cat!!.working() -> sendMessage("你的猫猫还在努力打工哦")
+                uhCat.working() -> sendMessage("你的猫猫还在努力打工哦")
                 userHome.food <= 0 -> sendMessage("铲屎官你家里已经没有罐头了")
                 else -> { // 一个猫罐头 等于 5份食物
-                    userHome.cat!!.addFood(5)
+                    uhCat.addFood(5)
                     userHome.food -= 1
-                    sendMessage("你往 ${userHome.cat!!.name} 的猫碗里面加了一个猫罐头")
+                    sendMessage("你往 ${uhCat.name} 的猫碗里面加了一个猫罐头")
                 }
             }
             return
