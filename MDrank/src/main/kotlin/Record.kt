@@ -9,11 +9,11 @@ class Record(
     val parallelRank: Int,
     songID: String,
     difficultyValue: Int,
-    character_uid: Int,
-    elfin_uid: Int
+    characterUID: Int,
+    elfinUID: Int
 ) {
     private val songName = MDAccountData.songList[songID]
-    private val difficulty = arrayOf("新手", "高手", "大触").get(difficultyValue)
+    private val difficulty = arrayOf("新手", "高手", "大触")[difficultyValue]
     private val character = arrayOf(
         "贝斯手-凛",
         "问题少女-凛",
@@ -37,7 +37,7 @@ class Record(
         "重生的少女-El_Clear",
         "修女-玛莉嘉",
         "黑白魔法使-雾雨魔理沙"
-    ).get(character_uid)
+    )[characterUID]
     private val elfin = arrayOf(
         "喵斯",
         "安吉拉",
@@ -49,7 +49,7 @@ class Record(
         "莉莉丝",
         "佩奇医生",
         "静音灵"
-    ).get(elfin_uid)
+    )[elfinUID]
 
 
     fun printInfo() = "$songName\n${difficulty}难度\n分数: $score - ${(accuracy.toDouble() * 100.0).roundToInt() / 100.0}%\n排名:#$rank(#$parallelRank)\n$character\t$elfin"

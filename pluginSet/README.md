@@ -27,7 +27,7 @@
 
 ### 插件列表
 插件名|解释
--:|-|
+|-:|-|
 AcgImage|随机图片
 AzurLaneLibrary|碧蓝航线数据库
 Bank|银行
@@ -42,4 +42,5 @@ SearchByImage|以图搜图
 Tarot|每日塔罗
 hitokot|一言
 DynamicPush|动态查询
-
+MDrank|喵斯水表
+CloudRaiseCat|云养猫

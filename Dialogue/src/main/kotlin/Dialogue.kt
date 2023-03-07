@@ -1,5 +1,6 @@
 package org.nymph
 
+import SQLiteJDBC
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.plugin.info
@@ -15,20 +16,17 @@ import org.nymph.DialogueData.invalidProblemFeedback
 import org.nymph.DialogueData.penaltyFeedback
 import org.nymph.DialogueData.prohibitedWord
 import org.nymph.DialogueData.triggerProbability
-import java.util.*
-
-import SQLite
 
 object Dialogue : KotlinPlugin(JvmPluginDescription(
     id = "org.nymph.dialogue",
     name = "Dialogue",
-    version = "0.1.2",
+    version = "0.2.0",
 ) {
     author("parker")
     info("""聊天问答-TB插件子功能模块""")
 }) {
 
-    val SQLiteLink = SQLite(resolveDataPath("AI.db"))
+    val SQLiteLink = SQLiteJDBC(resolveDataPath("AI.db"))
 
     override fun onEnable() {
 
@@ -54,6 +52,11 @@ object Dialogue : KotlinPlugin(JvmPluginDescription(
         }
         TemplateTeaching.register()
         Teaching.register()
+        EIDQuery.register()
+        Statistics.register()
+        TemplateQuery.register()
+        ThesaurusQuery.register()
+        ThesaurusDelete.register()
         SetInvalidProblemFeedback.register()
         SetPenaltyFeedback.register()
         SetProhibitedWord.register()
@@ -89,6 +92,11 @@ object Dialogue : KotlinPlugin(JvmPluginDescription(
     override fun onDisable() {
         TemplateTeaching.unregister()
         Teaching.unregister()
+        EIDQuery.unregister()
+        Statistics.unregister()
+        TemplateQuery.unregister()
+        ThesaurusQuery.unregister()
+        ThesaurusDelete.unregister()
         SetInvalidProblemFeedback.unregister()
         SetPenaltyFeedback.unregister()
         SetProhibitedWord.unregister()

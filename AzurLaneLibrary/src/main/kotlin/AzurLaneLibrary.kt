@@ -1,7 +1,7 @@
 package org.nymph
 
 
-import SQLite
+import SQLiteJDBC
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.plugin.info
@@ -16,13 +16,13 @@ object AzurLaneLibrary : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.azurlane-library",
         name = "AzurLaneLibrary",
-        version = "0.1.1",
+        version = "0.1.2",
     ) {
         author("parker")
         info("""碧蓝航线数据库-TB插件子功能模块""")
     }
 ) {
-    val SQLiteLink = SQLite(resolveDataPath("AssetData.db"))
+    val SQLiteLink = SQLiteJDBC(resolveDataPath("AssetData.db"))
 
     override fun onEnable() {
         logger.info { "$info-已加载" }

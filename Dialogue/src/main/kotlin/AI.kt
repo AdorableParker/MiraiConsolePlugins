@@ -1,7 +1,5 @@
 package org.nymph
 
-import sqliteJDBC.SQLResult
-
 object AI {
     fun dialogue(group: Long, content: String): String? {
         // 模板查询
@@ -14,8 +12,7 @@ object AI {
             }
         }
         // 查询
-        val result = //SQLResult("Testing", listOf<CorpusData>())
-        Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$content' AND(fromGroup = $group OR fromGroup = 0);" }
+        val result = Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$content' AND(fromGroup = $group OR fromGroup = 0);" }
         return when {
             result.error != null -> result.error
             result.data.isEmpty() -> null

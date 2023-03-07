@@ -11,7 +11,7 @@ object MDrank : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.md-rank",
         name = "MDrank",
-        version = "0.1.0",
+        version = "0.1.1",
     ) {
         author("parker")
         info("""MDrank-TB插件子功能模块""")
@@ -23,12 +23,12 @@ object MDrank : KotlinPlugin(
         MDAccountData.reload()
 
         Binding.register()
-        MyInfo.register()
+        MDAccountInfo.register()
     }
 
 
     override fun onDisable() {
         Binding.unregister()
-        MyInfo.unregister()
+        MDAccountInfo.unregister()
     }
 }
