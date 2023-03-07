@@ -21,13 +21,13 @@ object PersonalAccount : KotlinPlugin(
         logger.info { "$info-已加载" }
         Account.reload()
 
-        MyInfo.register()
+        AccountInfo.register()
         GoldCoinRank.register()
         CubeCoinRank.register()
     }
 
     override fun onDisable() {
-        MyInfo.unregister()
+        AccountInfo.unregister()
         GoldCoinRank.unregister()
         CubeCoinRank.unregister()
     }
