@@ -2,6 +2,7 @@ package org.nymph
 
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.buildMessageChain
@@ -11,6 +12,7 @@ import java.net.URL
 object CatState : SimpleCommand(
     CloudRaiseCat, "CatState", "猫猫状态", description = "查询猫猫状态"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}猫猫状态 \t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return

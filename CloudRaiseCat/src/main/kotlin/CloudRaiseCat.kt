@@ -11,7 +11,7 @@ import net.mamoe.mirai.utils.info
 object CloudRaiseCat : KotlinPlugin(JvmPluginDescription(
     id = "org.nymph.cloud-raise-cat",
     name = "CloudRaiseCat",
-    version = "0.1.0",
+    version = "0.1.1",
 ) {
     author("parker")
     dependsOn("org.nymph.personal-account", "[0.1.0,2.0.0)")

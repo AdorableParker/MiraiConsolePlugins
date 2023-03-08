@@ -1,12 +1,13 @@
 package org.nymph
 
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 
 object BuyCannedCat : SimpleCommand(
     CloudRaiseCat, "BuyCannedCat", "买猫粮", description = "购买猫罐头"
 ) {
-
+    override val usage: String = "${CommandManager.commandPrefix}买猫粮 \t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
@@ -25,6 +26,8 @@ object BuyCannedCat : SimpleCommand(
 
         account.gold -= 100 // 付款
         userHome.food += 1
+
+        sendMessage("你买了一个猫罐头")
     }
 
     @Handler
@@ -33,7 +36,7 @@ object BuyCannedCat : SimpleCommand(
         val account = Account.user.getOrPut(user.id) { UserAccount(0, 0, 200, 0) }
         val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
 
-        if (value >= 0) {
+        if (value <= 0) {
             sendMessage("这里不回收猫罐头哦")
             return
         }
@@ -48,5 +51,7 @@ object BuyCannedCat : SimpleCommand(
 
         account.gold -= 10 * value // 付款
         userHome.food += value
+
+        sendMessage("你买了${value}个猫罐头")
     }
 }

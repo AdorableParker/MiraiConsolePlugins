@@ -10,7 +10,7 @@ object ThesaurusDelete : SimpleCommand(
     Dialogue, "ThesaurusDelete", "删除",
     description = "根据条目ID删除"
 ) {
-    override val usage: String = "${CommandManager.commandPrefix}统计 [关键词]\t#$description"
+    override val usage: String = "${CommandManager.commandPrefix}删除 <关键词>\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(eid: Int) {

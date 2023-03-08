@@ -1,9 +1,11 @@
 package org.nymph
 
+import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 import kotlin.math.roundToInt
 
+@Serializable
 class Cat(var name: String, private val catType: String, val picUrl: String, private val uid: Long) {
 
     companion object {

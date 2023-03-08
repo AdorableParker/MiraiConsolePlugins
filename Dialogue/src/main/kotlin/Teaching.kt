@@ -1,6 +1,5 @@
 package org.nymph
 
-import SQLResult
 import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
@@ -18,8 +17,7 @@ object Teaching : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(question: String, answer: String) {
         if (group.botMuteRemaining > 0) return
-        val result = SQLResult("Testing", listOf<CorpusData>())
-        SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$question' AND answer='$answer' AND fromGroup=${group.id};" }
+        val result = SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$question' AND answer='$answer' AND fromGroup=${group.id};" }
         result.error?.let { error ->
             sendMessage(error)
             return

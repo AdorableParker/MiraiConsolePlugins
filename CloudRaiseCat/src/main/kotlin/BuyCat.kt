@@ -1,11 +1,13 @@
 package org.nymph
 
 import com.beust.klaxon.JsonArray
+import com.beust.klaxon.JsonObject
 import com.beust.klaxon.Parser
 import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.filterIsInstance
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
+import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.event.GlobalEventChannel
@@ -16,6 +18,7 @@ import org.jsoup.Jsoup
 object BuyCat : SimpleCommand(
     CloudRaiseCat, "BuyCat", "买猫", description = "购买一只猫猫"
 ) {
+    override val usage: String = "${CommandManager.commandPrefix}买猫 \t#$description"
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
@@ -110,7 +113,7 @@ object BuyCat : SimpleCommand(
         }
 
         account.gold -= 100 // 付款
-        CloudCatData.cloudCatList[user.id]?.cat = thisCat
+        userHome.cat = thisCat
     }
 
     private fun getCatInfo(catType: String, name: String, uid: Long): Cat {
@@ -119,7 +122,9 @@ object BuyCat : SimpleCommand(
             .ignoreContentType(true)
             .execute().body().toString()
         val jsonObj = Parser.default().parse(StringBuilder(doc1)) as JsonArray<*>
-        val picUrl = jsonObj.string("url").toString()
+        val catObj = jsonObj[0] as JsonObject
+        val picUrl = catObj.string("url").toString()
+            //
 //        val catId = jsonObj.string("id").toString()
 
 //        if (catId.isEmpty() || picUrl.isEmpty()) return null

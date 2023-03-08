@@ -20,7 +20,7 @@ import org.nymph.DialogueData.triggerProbability
 object Dialogue : KotlinPlugin(JvmPluginDescription(
     id = "org.nymph.dialogue",
     name = "Dialogue",
-    version = "0.2.0",
+    version = "0.2.1",
 ) {
     author("parker")
     info("""聊天问答-TB插件子功能模块""")

@@ -8,7 +8,7 @@ object EIDQuery : SimpleCommand(
     Dialogue, "EIDQuery", "EID查询",
     description = "根据条目ID查询"
 ) {
-    override val usage: String = "${CommandManager.commandPrefix}统计 [关键词]\t#$description"
+    override val usage: String = "${CommandManager.commandPrefix}EID查询 [关键词]\t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(eid: Int) {
