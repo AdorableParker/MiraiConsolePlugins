@@ -34,7 +34,6 @@ Bank|银行
 Blackjack|21点
 GroupWife|群老婆
 JobBroadcast|定时任务核心
-Moegoe|文本转语音
 NekoGenGo|喵语翻译
 PersonalAccount|个人账户
 PokeEcho|戳一戳回复
@@ -44,3 +43,5 @@ hitokot|一言
 DynamicPush|动态查询
 MDrank|喵斯水表
 CloudRaiseCat|云养猫
+Dialogue|聊天
+SelfHelpManagement|群管理
