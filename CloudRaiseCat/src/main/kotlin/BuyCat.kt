@@ -13,6 +13,7 @@ import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.event.GlobalEventChannel
 import net.mamoe.mirai.event.events.GroupMessageEvent
 import net.mamoe.mirai.message.data.content
+import net.mamoe.mirai.utils.debug
 import org.jsoup.Jsoup
 
 object BuyCat : SimpleCommand(
@@ -55,7 +56,7 @@ object BuyCat : SimpleCommand(
 
         val candidate = mutableSetOf<String>()
         while (candidate.size < 5) {
-            candidate.add("${candidate.size + 1} - ${Cat.CatType.keys.random()}")
+            candidate.add(Cat.CatType.keys.random())
         }
         val candidateList = candidate.toList()
         sendMessage(
@@ -63,7 +64,7 @@ object BuyCat : SimpleCommand(
                 "\n",
                 "猫猫100金币一只,现在猫店里面有:\n",
                 "\n你要购买那种猫呢(回复序号选择)"
-            )
+            ){ "${candidateList.indexOf(it)+1} - $it" }
         )
         val judge = GlobalEventChannel.asFlow().filterIsInstance<GroupMessageEvent>().filter { it.sender.id == user.id }
             .map { it.message.content.toIntOrNull() }.first() ?: 0
@@ -80,7 +81,7 @@ object BuyCat : SimpleCommand(
             return
         }
 
-        val thisCat = getCatInfo(candidateList[judge], catName, user.id)
+        val thisCat = getCatInfo(candidateList[judge-1], catName, user.id)
         val r = when ((1..100).random()) {
             in 1..10 -> {
                 thisCat.changeMood(-5)
@@ -101,11 +102,6 @@ object BuyCat : SimpleCommand(
                 sendMessage("$r,而且猫店赠送了你5个猫罐头")
             }
 
-            in 11..80 -> {
-                userHome.litter += 1
-                sendMessage("$r,而且猫店赠送了你1袋猫砂")
-            }
-
             in 81..100 -> {
                 userHome.liquid += 2
                 sendMessage("$r,而且猫店赠送了你2支猫条")
@@ -117,11 +113,13 @@ object BuyCat : SimpleCommand(
     }
 
     private fun getCatInfo(catType: String, name: String, uid: Long): Cat {
-
         val doc1 = Jsoup.connect("https://api.thecatapi.com/v1/images/search?breed_ids=${Cat.CatType[catType]}")
             .ignoreContentType(true)
             .execute().body().toString()
         val jsonObj = Parser.default().parse(StringBuilder(doc1)) as JsonArray<*>
+        for (i in jsonObj){
+            CloudRaiseCat.logger.debug{i.toString()}
+        }
         val catObj = jsonObj[0] as JsonObject
         val picUrl = catObj.string("url").toString()
             //

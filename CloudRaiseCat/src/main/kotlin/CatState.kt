@@ -22,6 +22,7 @@ object CatState : SimpleCommand(
             sendMessage("铲屎官你还没有属于你的主子喔,快去买一只吧!")
             return
         }
+//        CloudRaiseCat.logger.debug { uhCat.picUrl }
         sendMessage(buildMessageChain {
             +(withContext(Dispatchers.IO) {
                 URL(uhCat.picUrl).openConnection().getInputStream()
