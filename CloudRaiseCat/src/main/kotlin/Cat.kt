@@ -112,7 +112,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
         }
         /** 正常结算**/
         val subTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - lastInteractionTime
-        val shouldEat = subTime / 60.0
+        val shouldEat = subTime / 300.0
         /** 食物结算 **/
         if (foodBasin <= shouldEat) { // 食盆里面有的 小于 应该吃的 吃食盆里面的
             eatFood(foodBasin)
@@ -120,7 +120,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
             eatFood(shouldEat)
         }
         /** 消化结算 **/
-        val shouldDigestion = subTime / 120.0
+        val shouldDigestion = subTime / 1500.0
         if (satiety >= shouldDigestion) {
             satiety -= shouldDigestion
             weight += shouldDigestion
@@ -158,7 +158,8 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
     }
 
     fun toWork(): String {
-        workEnd = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + 3600 * (1..8).random()
+        workTime = (1..8).random()
+        workEnd = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) + 3600 * workTime
         return "$name 开始去打工了"
     }
 
@@ -171,14 +172,12 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
             eatFood((10..20).random() / 10.0) // 吃工作餐
             changeMood((-20..20).random()) // 工作心情变化
             workEnd = 0L
-            account.gold += (10..workTime * 11).random()
+            account.gold += (10..workTime * 11).random() // 发工资
             false
         }
     }
 
     fun getCatInfo(): String {
-        val r = upDataCatInfo()
-        if (r != null) return r
-        return "品种: $catType\n饱食度: ${(satiety * 100.0).roundToInt() / 100.0}\n心情: $mood\n体重: ${(weight * 100).roundToInt() / 100.0}\n状态: ${if (workEnd != 0L) "工作中" else "休息中"}\n猫碗中的剩余猫粮: ${(foodBasin * 100).roundToInt() / 100}"
+        return upDataCatInfo() ?: "品种: $catType\n饱食度: ${(satiety * 100.0).roundToInt() / 100.0}\n心情: $mood\n体重: ${(weight * 100).roundToInt() / 100.0}\n状态: ${if (workEnd != 0L) "工作中" else "休息中"}\n猫碗中的剩余猫粮: ${(foodBasin * 100).roundToInt() / 100}"
     }
 }

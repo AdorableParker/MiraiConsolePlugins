@@ -20,6 +20,7 @@ object BuyCat : SimpleCommand(
     CloudRaiseCat, "BuyCat", "买猫", description = "购买一只猫猫"
 ) {
     override val usage: String = "${CommandManager.commandPrefix}买猫 \t#$description"
+
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
@@ -64,7 +65,7 @@ object BuyCat : SimpleCommand(
                 "\n",
                 "猫猫100金币一只,现在猫店里面有:\n",
                 "\n你要购买那种猫呢(回复序号选择)"
-            ){ "${candidateList.indexOf(it)+1} - $it" }
+            ) { "${candidateList.indexOf(it) + 1} - $it" }
         )
         val judge = GlobalEventChannel.asFlow().filterIsInstance<GroupMessageEvent>().filter { it.sender.id == user.id }
             .map { it.message.content.toIntOrNull() }.first() ?: 0
@@ -81,7 +82,7 @@ object BuyCat : SimpleCommand(
             return
         }
 
-        val thisCat = getCatInfo(candidateList[judge-1], catName, user.id)
+        val thisCat = getCatInfo(candidateList[judge - 1], catName, user.id)
         val r = when ((1..100).random()) {
             in 1..10 -> {
                 thisCat.changeMood(-5)
@@ -99,14 +100,16 @@ object BuyCat : SimpleCommand(
         when ((1..100).random()) {
             in 1..10 -> {
                 userHome.food += 5
-                sendMessage("$r,而且猫店赠送了你5个猫罐头")
+                "$r,而且猫店赠送了你5个猫罐头"
             }
 
             in 81..100 -> {
                 userHome.liquid += 2
-                sendMessage("$r,而且猫店赠送了你2支猫条")
+                "$r,而且猫店赠送了你2支猫条"
             }
-        }
+
+            else -> r
+        }.let { sendMessage(it) }
 
         account.gold -= 100 // 付款
         userHome.cat = thisCat
@@ -117,12 +120,12 @@ object BuyCat : SimpleCommand(
             .ignoreContentType(true)
             .execute().body().toString()
         val jsonObj = Parser.default().parse(StringBuilder(doc1)) as JsonArray<*>
-        for (i in jsonObj){
-            CloudRaiseCat.logger.debug{i.toString()}
+        for (i in jsonObj) {
+            CloudRaiseCat.logger.debug { i.toString() }
         }
         val catObj = jsonObj[0] as JsonObject
         val picUrl = catObj.string("url").toString()
-            //
+        //
 //        val catId = jsonObj.string("id").toString()
 
 //        if (catId.isEmpty() || picUrl.isEmpty()) return null
