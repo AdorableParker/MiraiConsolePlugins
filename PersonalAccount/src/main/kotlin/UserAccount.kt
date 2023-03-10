@@ -8,5 +8,5 @@ data class UserAccount(
     var gold: Int,
     var cube: Int,
     var favorAbility: Int,
-    var loginTime: Int
+    var loginTime: Long
 )

@@ -21,3 +21,5 @@ object AccountInfo : SimpleCommand(
         sendMessage("${user.nameCardOrNick}\n|金币:${userInfo.gold}枚\n|魔方:${userInfo.cube}个\n|好感度:${userInfo.favorAbility}‰")
     }
 }
+
+

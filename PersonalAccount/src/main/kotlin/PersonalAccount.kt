@@ -11,7 +11,7 @@ object PersonalAccount : KotlinPlugin(
     JvmPluginDescription(
         id = "org.nymph.personal-account",
         name = "PersonalAccount",
-        version = "0.1.2",
+        version = "0.1.3",
     ) {
         author("parker")
         info("""个人账户-TB插件子功能模块""")
@@ -24,11 +24,13 @@ object PersonalAccount : KotlinPlugin(
         AccountInfo.register()
         GoldCoinRank.register()
         CubeCoinRank.register()
+        ReceiveMLA.register()
     }
 
     override fun onDisable() {
         AccountInfo.unregister()
         GoldCoinRank.unregister()
         CubeCoinRank.unregister()
+        ReceiveMLA.unregister()
     }
 }
