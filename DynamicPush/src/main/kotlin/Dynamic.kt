@@ -28,12 +28,17 @@ object Dynamic {
             .ignoreContentType(true)
             .execute().body().toString()
         val jsonObj = Parser.default().parse(StringBuilder(doc)) as JsonObject
-        val dynamicObj = jsonObj.obj("data")
-            ?.array<JsonObject>("cards")?.get(index)
-        val desc = dynamicObj?.obj("desc")!!
+
+        val dynamicObj = jsonObj.obj("data")?.array<JsonObject>("cards")?.let {
+            it.getOrElse(index){
+                return DynamicInfo(0, null, "")
+            }
+        } ?: return DynamicInfo(0, null, "")
+
+        val desc = dynamicObj.obj("desc")
         val card = Parser.default().parse(StringBuilder(dynamicObj.string("card"))) as JsonObject
-        val typeCode = desc.int("type") ?: 0
-        val timestamp = desc.long("timestamp")?.times(1000) ?: 0
+        val typeCode = desc?.int("type") ?: 0
+        val timestamp = desc?.long("timestamp")?.times(1000) ?: 0
 
         if (flag) {
             val oldTime = DynamicPushData.timeStampOfDynamic[uid] ?: 0

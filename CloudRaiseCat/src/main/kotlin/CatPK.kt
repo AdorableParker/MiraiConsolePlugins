@@ -23,10 +23,12 @@ object CatPK : SimpleCommand(
             return
         }
         val r1 = uhCat.upDataCatInfo()
-        if (r1.isNullOrEmpty()) {
-            if (uhCat.working()) sendMessage("你的猫猫还在努力打工哦") else sendMessage(uhCat.toWork())
+
+        if (r1.isNullOrEmpty() && uhCat.working()) {
+            sendMessage("你的猫猫还在努力打工哦")
             return
         }
+
         val targetHome = CloudCatData.cloudCatList.getOrPut(target.id) { UserHome() }
         val thCat = targetHome.cat
         if (thCat == null) {
