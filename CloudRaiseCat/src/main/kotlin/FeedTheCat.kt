@@ -20,8 +20,8 @@ object FeedTheCat : SimpleCommand(CloudRaiseCat, "FeedTheCat", "喂猫", descrip
             when {
                 uhCat.working() -> sendMessage("你的猫猫还在努力打工哦")
                 userHome.food <= 0 -> sendMessage("铲屎官你家里已经没有罐头了")
-                else -> { // 一个猫罐头 等于 5份食物
-                    uhCat.addFood(5)
+                else -> { // 一个猫罐头 等于 100克食物
+                    uhCat.addFood(100)
                     userHome.food -= 1
                     sendMessage("你往 ${uhCat.name} 的猫碗里面加了一个猫罐头")
                 }

@@ -16,8 +16,14 @@ object Teaching : SimpleCommand(
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main(question: String, answer: String) {
+
         if (group.botMuteRemaining > 0) return
-        val result = SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$question' AND answer='$answer' AND fromGroup=${group.id};" }
+        val result = SQLiteLink.safeExecuteDQLorDCL<CorpusData>(
+            "SELECT * FROM Corpus WHERE question = ? AND answer= ? AND fromGroup= ?;",
+            question,
+            answer,
+            group.id
+        )
         result.error?.let { error ->
             sendMessage(error)
             return

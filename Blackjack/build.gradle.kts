@@ -1,9 +1,9 @@
 plugins {
-    val kotlinVersion = "1.7.10"
+    val kotlinVersion = "1.8.20"
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.serialization") version kotlinVersion
 
-    id("net.mamoe.mirai-console") version "2.12.0"
+    id("net.mamoe.mirai-console") version "2.14.0"
 }
 
 group = "org.nymph"

@@ -4,7 +4,6 @@ import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import org.nymph.AzurLaneLibrary.SQLiteLink
-import org.nymph.Construction.listType
 
 object Construction : SimpleCommand(
     AzurLaneLibrary, "Construction", "建造时间", description = "碧蓝航线建造时间查询"
@@ -32,11 +31,13 @@ object Construction : SimpleCommand(
         return when {
             result.error != null -> result.error!!
             result.data.isEmpty() -> "没有或尚未收录建造时间为 $time 的可建造舰船"
-            else -> result.data.sortedWith(compareBy({ it.type },
-                { it.originalName.length },
-                { it.alias.length },
-                { it.originalName },
-                { it.alias })).joinToString("", "建造时间为 $time 的舰船有:") {
+            else -> result.data.sortedWith(
+                compareBy({ it.type },
+                    { it.originalName.length },
+                    { it.alias.length },
+                    { it.originalName },
+                    { it.alias })
+            ).joinToString("", "建造时间为 $time 的舰船有:") {
                 "船名：${it.originalName}[${it.alias}]-${it.rarity}\t${listType(it.type)}\n"
             }
         }
@@ -50,39 +51,40 @@ object Construction : SimpleCommand(
         return when {
             result.error != null -> result.error!!
             result.data.isEmpty() -> "没有或尚未收录名字包含有 $name 的可建造舰船"
-            else -> result.data.sortedWith(compareBy({ it.type },
-                { it.time.split(":")[0] },
-                { it.time.split(":")[1] },
-                { it.time.split(":")[2] },
-                { it.originalName.length },
-                { it.alias.length },
-                { it.originalName },
-                { it.alias })).joinToString("", "名字包含有 $name 的可建造舰船有:") {
+            else -> result.data.sortedWith(
+                compareBy({ it.type },
+                    { it.time.split(":")[0] },
+                    { it.time.split(":")[1] },
+                    { it.time.split(":")[2] },
+                    { it.originalName.length },
+                    { it.alias.length },
+                    { it.originalName },
+                    { it.alias })
+            ).joinToString("", "名字包含有 $name 的可建造舰船有:") {
                 "船名：${it.originalName}[${it.alias}]-${it.rarity}\t建造时间：${it.time}\t${listType(it.type)}\n"
             }
         }
     }
 
     private fun listType(type: Int): String {
-        when(type){
-            8 -> return "限"
-            4 -> return "特"
-            2 -> return "重"
-            1 -> return "轻"
-            0 -> return "绝"
+        return when (type / 10) {
+            7 -> "联/限/常"
+            6 -> "联/限"
+            5 -> "联/常"
+            4 -> "联"
+            3 -> "限/常"
+            2 -> "限"
+            1 -> "常"
+            else -> ""
+        } + when (type % 10) {
+            7 -> "特/重/轻"
+            6 -> "特/重"
+            5 -> "特/轻"
+            4 -> "特"
+            3 -> "重/轻"
+            2 -> "重"
+            1 -> "轻"
+            else -> ""
         }
-
-        var r = ""
-        var v = type
-        if (v >= 4) {
-            v -= 4
-            r = "特"
-        }
-        if (v >= 2){
-            v -= 2
-            r = "重-$r"
-        }
-        if (v == 1) r = "轻-$r"
-        return r
     }
 }

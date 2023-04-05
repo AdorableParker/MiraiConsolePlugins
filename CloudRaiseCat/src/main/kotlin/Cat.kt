@@ -79,9 +79,9 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
 
 
     private var mood: Int = (1..100).random() // 心情
-    private var weight: Double = (1..100).random() / 10.0  // 体重
+    private var weight: Double = (1..100).random() / 10.0  // 体重 单位 0.1斤
     private var satiety: Double = (1..900).random() / 10.0 // 饱食度
-    private var foodBasin: Double = 0.0
+    private var foodBasin: Double = 0.0  // 单位 克
     private var workEnd: Long = 0 // 打工结束时间
     private var workTime: Int = 0
     var arenaTime: Long = 0 // 上次PK时间
@@ -95,12 +95,11 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
 
     private fun eatFood(needEat: Double) {
         val canEaten = 100 - satiety
+        foodBasin -= needEat
         if (canEaten < needEat) {  // 能吃下的 小于 需要吃的 吃能吃下的
             satiety = 100.0
-            foodBasin -= canEaten
         } else {              // 能吃下的 大于 需要吃的 吃需要吃的
             satiety += needEat
-            foodBasin -= needEat
         }
     }
 
@@ -112,7 +111,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
         }
         /** 正常结算**/
         val subTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - lastInteractionTime
-        val shouldEat = subTime / 300.0
+        val shouldEat = subTime / 1080.0 * 5.5
         /** 食物结算 **/
         if (foodBasin <= shouldEat) { // 食盆里面有的 小于 应该吃的 吃食盆里面的
             eatFood(foodBasin)
@@ -120,17 +119,17 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
             eatFood(shouldEat)
         }
         /** 消化结算 **/
-        val shouldDigestion = subTime / 1500.0
+        val shouldDigestion = subTime / 300.0 * 1.5 * (weight / 100.0)
         if (satiety >= shouldDigestion) {
             satiety -= shouldDigestion
-            weight += shouldDigestion
+            weight += shouldDigestion * mood
         } else {
             val consumptionFat = shouldDigestion - satiety
             satiety = 0.0
-            weight -= consumptionFat * 0.6
+            weight += satiety * 0.95 - consumptionFat * 1.05
         }
         /** 心情结算 **/
-        val moodChange = ((50 + satiety * 0.8 - weight * 0.3) / 50 * mood * shouldEat).toInt()
+        val moodChange = ((50 + satiety * 0.8 - weight * 0.3) / 50 * subTime / 300).toInt()
         mood = when {
             moodChange + mood > 100 -> 100
             moodChange + mood < 0 -> 0
@@ -178,6 +177,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
     }
 
     fun getCatInfo(): String {
-        return upDataCatInfo() ?: "品种: $catType\n饱食度: ${(satiety * 100.0).roundToInt() / 100.0}\n心情: $mood\n体重: ${(weight * 100).roundToInt() / 100.0}\n状态: ${if (workEnd != 0L) "工作中" else "休息中"}\n猫碗中的剩余猫粮: ${(foodBasin * 100).roundToInt() / 100}"
+        return upDataCatInfo()
+            ?: "品种: $catType\n饱食度: ${(satiety * 100.0).roundToInt() / 100.0}\n心情: $mood\n体重: ${(weight * 100).roundToInt() / 100.0}\n状态: ${if (workEnd != 0L) "工作中" else "休息中"}\n猫碗中的剩余猫粮: ${(foodBasin * 100).roundToInt() / 100}"
     }
 }

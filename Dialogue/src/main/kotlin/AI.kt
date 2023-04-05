@@ -12,7 +12,13 @@ object AI {
             }
         }
         // 查询
-        val result = Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE question = '$content' AND(fromGroup = $group OR fromGroup = 0);" }
+//        val result = Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { """SELECT * FROM Corpus WHERE question = "$content" AND(fromGroup = $group OR fromGroup = 0);""" }
+        val result = Dialogue.SQLiteLink.safeExecuteDQLorDCL<CorpusData>(
+            "SELECT * FROM Corpus WHERE question = ? AND (fromGroup = ? OR fromGroup = 0);",
+            content,
+            group
+        )
+
         return when {
             result.error != null -> result.error
             result.data.isEmpty() -> null

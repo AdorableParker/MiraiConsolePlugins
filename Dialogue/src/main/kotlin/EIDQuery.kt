@@ -14,7 +14,9 @@ object EIDQuery : SimpleCommand(
     suspend fun MemberCommandSenderOnMessage.main(eid: Int) {
         if (group.botMuteRemaining > 0) return
 
-        val result = Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE id = $eid;" }
+//        val result = Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE id = $eid;" }
+        val result = Dialogue.SQLiteLink.safeExecuteDQLorDCL<CorpusData>("SELECT * FROM Corpus WHERE id = ?;", eid)
+
         result.error?.let {
             sendMessage(it)
             return

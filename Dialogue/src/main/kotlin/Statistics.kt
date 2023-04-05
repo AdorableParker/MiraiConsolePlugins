@@ -15,7 +15,12 @@ object Statistics : SimpleCommand(
         if (group.botMuteRemaining > 0) return
 
         val result =
-            Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE answer GLOB '*$key*' OR question GLOB '*$key*';" }
+//            Dialogue.SQLiteLink.executeDQLorDCL<CorpusData> { "SELECT * FROM Corpus WHERE answer GLOB '*$key*' OR question GLOB '*$key*';" }
+            Dialogue.SQLiteLink.safeExecuteDQLorDCL<CorpusData>(
+                "SELECT * FROM Corpus WHERE answer GLOB '*?*' OR question GLOB '*?*';",
+                key,
+                key
+            )
         result.error?.let { error ->
             sendMessage(error)
             return

@@ -3,15 +3,14 @@ package org.nymph
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import net.mamoe.mirai.console.command.CommandManager
-import net.mamoe.mirai.console.command.CommandManager.INSTANCE.isRegistered
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.message.data.buildMessageChain
-import net.mamoe.mirai.message.sourceTime
 import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import net.mamoe.mirai.utils.error
 import okhttp3.OkHttpClient
 import okhttp3.Request
+
 import org.nymph.Data.proxy
 import java.net.SocketTimeoutException
 import java.net.URL
@@ -26,7 +25,15 @@ object DailyImage : SimpleCommand(
     private val json = Json { ignoreUnknownKeys = true }
 
     @Handler
-    suspend fun MemberCommandSenderOnMessage.main(count: Int = 1, tag: String? = null) {
+    suspend fun MemberCommandSenderOnMessage.main(count: Int) = core(count, "")
+
+    @Handler
+    suspend fun MemberCommandSenderOnMessage.main(tag: String) = core(1, tag)
+
+    @Handler
+    suspend fun MemberCommandSenderOnMessage.main(count: Int, tag: String) = core(count, tag)
+
+    private suspend fun MemberCommandSenderOnMessage.core(count: Int, tag: String) {
         if (group.botMuteRemaining > 0) return
 
         val account = Account.user.getOrPut(user.id) { UserAccount(200, 0, 200, 0) }
@@ -36,7 +43,7 @@ object DailyImage : SimpleCommand(
         }
 
         val (err, doc) = getImageData(
-            "https://api.lolicon.app/setu/v2?r18=0&size=regular&proxy=${proxy}&num=$count${if (tag != null) "&tag=$tag" else ""}"
+            "https://api.lolicon.app/setu/v2?r18=0&size=regular&proxy=${proxy}&num=$count${if (tag.isBlank()) "&tag=$tag" else ""}"
         )
         if (err != null) {
             sendMessage(err)
