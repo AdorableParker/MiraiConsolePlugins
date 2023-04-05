@@ -23,7 +23,7 @@ class Player(
                 }
             }
         }
-        nowPoint = count + if (countOfA != 0 && count <= 10) 10 else 0
+        nowPoint = count + if (countOfA != 0 && count <= 11) 10 else 0
         return nowPoint
     }
 }

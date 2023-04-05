@@ -9,7 +9,7 @@ import org.nymph.SlotMachineData.jackpot
 object AutoBetting : SimpleCommand(
     SlotMachine, "autoBetting", "快速拉杆", description = "自动连拉三次"
 ) {
-    override val usage: String = "${CommandManager.commandPrefix}快速模式 \t#$description"
+    override val usage: String = "${CommandManager.commandPrefix}快速拉杆 \t#$description"
 
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {

@@ -37,8 +37,10 @@ object CatPK : SimpleCommand(
         }
         val r2 = thCat.upDataCatInfo()
         if (r2.isNullOrEmpty()) {
-            if (uhCat.working()) sendMessage("Ta的猫猫还在努力打工哦") else sendMessage(uhCat.toWork())
-            return
+            if (uhCat.working()) {
+                sendMessage("Ta的猫猫还在努力打工哦")
+                return
+            }
         }
         if (uhCat.arenaTime + 600 >= LocalDateTime.now().toEpochSecond(ZoneOffset.UTC)){
             sendMessage("你的猫猫才pk没多久,现在不想pk哦")

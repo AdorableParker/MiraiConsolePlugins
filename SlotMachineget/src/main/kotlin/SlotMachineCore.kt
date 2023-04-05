@@ -40,7 +40,7 @@ class SlotMachineCore {
     }
 
     fun show() = """    
-        ${turntable[0][0]} ${turntable[1][0]} ${turntable[2][1]}
+        ${turntable[0][0]} ${turntable[1][0]} ${turntable[2][0]}
         ${turntable[0][1]} ${turntable[1][1]} ${turntable[2][1]}
         ${turntable[0][2]} ${turntable[1][2]} ${turntable[2][2]}
         --- --- ---

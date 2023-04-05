@@ -21,6 +21,8 @@ object SlotMachine : KotlinPlugin(
 ) {
     override fun onEnable() {
         logger.info { "$info-已加载" }
+        SlotMachineData.reload()
+
         AutoBetting.register()
     }
     override fun onDisable() {
