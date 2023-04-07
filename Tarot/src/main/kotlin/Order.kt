@@ -57,6 +57,6 @@ object Order : SimpleCommand(
         return if ((0..100).random(Seed.getSeed(uid, Cycle.Day)) in 0..50)
             TarotData("判定！顺位-${brand[0]}(${brand[1]})", brand[2], "tarot/${brand[1]}-正.jpg")
         else
-            TarotData("判定！逆位-$brand", brand[3], "tarot/${brand[1]}-逆.jpg")
+            TarotData("判定！逆位-${brand[0]}(${brand[1]})", brand[3], "tarot/${brand[1]}-逆.jpg")
     }
 }
