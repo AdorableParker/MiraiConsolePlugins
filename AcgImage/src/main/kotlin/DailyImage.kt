@@ -25,13 +25,7 @@ object DailyImage : SimpleCommand(
     private val json = Json { ignoreUnknownKeys = true }
 
     @Handler
-    suspend fun MemberCommandSenderOnMessage.main(count: Int) = core(count, "")
-
-    @Handler
-    suspend fun MemberCommandSenderOnMessage.main(tag: String) = core(1, tag)
-
-    @Handler
-    suspend fun MemberCommandSenderOnMessage.main(count: Int, tag: String) = core(count, tag)
+    suspend fun MemberCommandSenderOnMessage.main(count: Int = 1, tag: String = "") = core(count, tag)
 
     private suspend fun MemberCommandSenderOnMessage.core(count: Int, tag: String) {
         if (group.botMuteRemaining > 0) return

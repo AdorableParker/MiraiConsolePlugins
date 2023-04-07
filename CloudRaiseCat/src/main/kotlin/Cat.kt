@@ -122,7 +122,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
         val shouldDigestion = subTime / 300.0 * 0.15 * (weight / 100.0)
         if (satiety >= shouldDigestion) {
             satiety -= shouldDigestion
-            weight += shouldDigestion * mood
+            weight += shouldDigestion * mood / 75.0
         } else {
             val consumptionFat = shouldDigestion - satiety
             satiety = 0.0

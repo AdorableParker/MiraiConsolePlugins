@@ -1,5 +1,7 @@
 package org.nymph
 
+import org.nymph.SlotMachineData.NOfW
+import org.nymph.SlotMachineData.TNOT
 import org.nymph.SlotMachineData.jackpot
 import kotlin.math.pow
 
@@ -26,7 +28,8 @@ class SlotMachineCore {
             turntable[0][0] -> if (turntable[2][2] == turntable[0][0]) base[0]++
             turntable[2][0] -> if (turntable[0][2] == turntable[2][0]) base[0]++
         }
-
+        if (base.sum() != 0) NOfW++
+        TNOT++
         return base
     }
 

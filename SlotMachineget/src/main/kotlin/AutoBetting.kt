@@ -3,7 +3,10 @@ package org.nymph
 import net.mamoe.mirai.console.command.CommandManager
 import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
+import org.nymph.SlotMachineData.NOfW
+import org.nymph.SlotMachineData.TNOT
 import org.nymph.SlotMachineData.jackpot
+import java.text.DecimalFormat
 
 
 object AutoBetting : SimpleCommand(
@@ -26,6 +29,6 @@ object AutoBetting : SimpleCommand(
         val bonus = slotMachine.quickBetting()
         jackpot -= bonus
         account.gold += bonus
-        sendMessage("${slotMachine.show()}\n获得奖金$bonus")
+        sendMessage("目前奖池金额:$jackpot\n累计中奖概率:${DecimalFormat("#.##%").format(NOfW/TNOT)}\n========\n${slotMachine.show()}\n获得奖金$bonus")
     }
 }
