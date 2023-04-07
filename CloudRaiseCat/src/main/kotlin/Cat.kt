@@ -111,7 +111,7 @@ class Cat(var name: String, private val catType: String, val picUrl: String, pri
         }
         /** 正常结算**/
         val subTime = LocalDateTime.now().toEpochSecond(ZoneOffset.UTC) - lastInteractionTime
-        val shouldEat = subTime / 1080.0 * 0.1
+        val shouldEat = subTime / 1080.0 * 1.25
         /** 食物结算 **/
         if (foodBasin <= shouldEat) { // 食盆里面有的 小于 应该吃的 吃食盆里面的
             eatFood(foodBasin)
