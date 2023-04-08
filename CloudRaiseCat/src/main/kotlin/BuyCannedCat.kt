@@ -12,10 +12,10 @@ object BuyCannedCat : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
-        val account = Account.user.getOrPut(user.id) { UserAccount(0, 0, 200, 0) }
+        val account = Account.user.getOrPut(user.id) { UserAccount(200, 0, 200, 0) }
         val userHome = CloudCatData.cloudCatList.getOrPut(user.id) { UserHome() }
 
-        if (1 > 100.0 - userHome.food) {
+        if (1 > 20.0 - userHome.food) {
             sendMessage("你的家里已经堆不下猫罐头啦，快使用喂食命令给猫猫喂罐头吧")
             return
         }
@@ -24,7 +24,7 @@ object BuyCannedCat : SimpleCommand(
             return
         }
 
-        account.gold -= 100 // 付款
+        account.gold -= 10 // 付款
         userHome.food += 1
 
         sendMessage("你买了一个猫罐头")

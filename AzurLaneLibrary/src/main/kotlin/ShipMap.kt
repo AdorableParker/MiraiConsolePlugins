@@ -45,9 +45,9 @@ object ShipMap : SimpleCommand(
     }
 
     private fun nameToMap(name: String): String {
-        val result = SQLiteLink.executeDQLorDCL<ShipMapData> {
-            "SELECT * FROM ShipMap WHERE originalName GLOB '*$name*' OR alias GLOB '*$name*';"
-        }
+        val result = SQLiteLink.safeExecuteDQLorDCL<ShipMapData>(
+            "SELECT * FROM ShipMap WHERE originalName GLOB ? OR alias GLOB ?;", "*$name*", "*$name*"
+        )
         return when {
             result.error != null -> result.error!!
             result.data.isEmpty() -> "没有或尚未收录名字包含有 $name 的可打捞舰船"
@@ -60,8 +60,8 @@ object ShipMap : SimpleCommand(
                     { it.originalName },
                     { it.alias }
                 )
-            ).joinToString("", "名字包含有 $name 的可打捞舰船有:\n") {
-                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t可打捞地点:\n${format(it.mapCode)}${"${it.special}\n"}"
+            ).joinToString("\n", "名字包含有 $name 的可打捞舰船有:\n") {
+                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t可打捞地点:\n${format(it.mapCode)} ${it.special}"
             }
         }
     }
@@ -82,7 +82,7 @@ object ShipMap : SimpleCommand(
                     { it.originalName },
                     { it.alias }
                 )
-            ).joinToString("", "可在 $index 打捞的舰船有:\n") { "${it.originalName}[${it.alias}]-${it.rarity}" }
+            ).joinToString("\n", "可在 $index 打捞的舰船有:\n") { "${it.originalName}[${it.alias}]-${it.rarity}" }
         }
     }
 }

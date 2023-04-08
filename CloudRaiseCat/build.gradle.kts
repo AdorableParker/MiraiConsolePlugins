@@ -17,7 +17,7 @@ repositories {
 
 
 dependencies {
-    compileOnly(files("libs/PersonalAccount-0.1.0.mirai.jar"))
+    compileOnly(files("libs/PersonalAccount-0.1.3.mirai2.jar"))
     implementation("com.beust:klaxon:5.5")
     implementation("org.jsoup:jsoup:1.15.4")
 }

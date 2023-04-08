@@ -5,7 +5,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 class Player(
     val playerID: Long,
-    val ante: Int = 100,
+    val ante: Int,
     val handCard: MutableList<String> = mutableListOf(),
     var odds: Double = -1.0,
     var nowPoint: Int = 0,

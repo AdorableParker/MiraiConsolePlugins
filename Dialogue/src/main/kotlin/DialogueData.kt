@@ -9,18 +9,13 @@ object DialogueData : AutoSavePluginData("AiTemplate") {
     @ValueDescription("初始化状态")
     var initialization: Boolean by value(true)
 
-    @ValueDescription("违禁词")
-    val prohibitedWord: MutableSet<String> by value(
-        mutableSetOf()
+    val PublicInvalidQuestionFeedback: MutableSet<String> by value(
+        mutableSetOf(
+            "( -`_´- ) (似乎并没有听懂...",
+            "你在说什么怪话啊"
+        )
     )
-
-    @ValueDescription("聊天触发概率")
-    val triggerProbability: MutableMap<Long, Int> by value(
-        mutableMapOf()
-    )
-
-    @ValueDescription("惩罚反馈")
-    val penaltyFeedback: MutableSet<String> by value(
+    val PublicPenaltyFeedback: MutableSet<String> by value(
         mutableSetOf(
             "给爷爬╰（‵□′）╯",
             "爬远点(ノ｀Д)ノ",
@@ -32,13 +27,20 @@ object DialogueData : AutoSavePluginData("AiTemplate") {
         )
     )
 
-    @ValueDescription("无回答反馈")
-    val invalidProblemFeedback: MutableSet<String> by value(
-        mutableSetOf("( -`_´- ) (似乎并没有听懂... ")
+    @ValueDescription(
+        """
+         **
+         * qaSheet 问答模板
+         * triggerProbability 各群聊天触发概率
+         * invalidProblemFeedback 无回答反馈
+         * prohibitedWord 各群违禁词
+         * penaltyFeedback 惩罚反馈
+         **
+         """
     )
-
-    @ValueDescription("各群的问答模板")
-    val QASheet: MutableMap<Long, MutableSet<QAPair>> by value(
+    val groupConfiguration: MutableMap<Long, GroupSet> by value(
         mutableMapOf()
     )
 }
+
+

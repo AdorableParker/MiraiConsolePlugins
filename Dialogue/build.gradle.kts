@@ -7,7 +7,7 @@ plugins {
 }
 
 group = "org.nymph"
-version = "0.2.1"
+version = "0.2.2"
 
 repositories {
     maven("https://maven.aliyun.com/repository/public")

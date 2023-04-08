@@ -9,6 +9,7 @@ object TemplateTeaching : SimpleCommand(
     description = "问答模板教学"
 ) {
     override val usage: String = "${CommandManager.commandPrefix}模板教学 <模板问题> <模板答案>\t#$description"
+
     @Handler
     suspend fun MemberCommandSenderOnMessage.templateTeaching(question: String, answer: String) {
         if (group.botMuteRemaining > 0) return
@@ -18,7 +19,12 @@ object TemplateTeaching : SimpleCommand(
         val patternQ = ("^${templateIdentifierQ.replace(question, "(.+)")}$")
         val patternA = templateIdentifierA.replace(answer, "\\$$1")
 
-        DialogueData.QASheet.getOrPut(group.id) { mutableSetOf() }.add(QAPair(patternQ, patternA))
+        DialogueData.groupConfiguration.getOrPut(group.id) {
+            GroupSet(
+                33, mutableSetOf(), mutableSetOf(),
+                mutableSetOf(), mutableSetOf()
+            )
+        }.qaSheet.add(QAPair(patternQ, patternA))
         sendMessage("模板已添加")
     }
 }

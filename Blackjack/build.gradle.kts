@@ -15,5 +15,5 @@ repositories {
 }
 
 dependencies {
-    compileOnly(files("libs/PersonalAccount-0.1.0.mirai.jar"))
+    compileOnly(files("libs/PersonalAccount-0.1.3.mirai2.jar"))
 }

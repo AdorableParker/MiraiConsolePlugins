@@ -49,7 +49,7 @@ object BuyCat : SimpleCommand(
         }
 
 
-        val account = Account.user.getOrPut(user.id) { UserAccount(0, 0, 200, 0) }
+        val account = Account.user.getOrPut(user.id) { UserAccount(200, 0, 200, 0) }
         if (account.gold < 100) {
             sendMessage("一只喵喵售价100金币哦,你身上没有足够的钱,快去赚钱吧~")
             return

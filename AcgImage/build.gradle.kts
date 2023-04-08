@@ -16,7 +16,7 @@ repositories {
 
 
 dependencies {
-    compileOnly(files("libs/PersonalAccount-0.1.0.mirai2.jar"))
+    compileOnly(files("libs/PersonalAccount-0.1.3.mirai2.jar"))
 
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 }

@@ -9,18 +9,19 @@ import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.event.EventPriority
 import net.mamoe.mirai.event.globalEventChannel
 import net.mamoe.mirai.event.subscribeGroupMessages
-import net.mamoe.mirai.message.data.*
+import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.content
+import net.mamoe.mirai.message.data.toMessageChain
 import net.mamoe.mirai.utils.info
+import org.nymph.DialogueData.PublicInvalidQuestionFeedback
+import org.nymph.DialogueData.PublicPenaltyFeedback
+import org.nymph.DialogueData.groupConfiguration
 import org.nymph.DialogueData.initialization
-import org.nymph.DialogueData.invalidProblemFeedback
-import org.nymph.DialogueData.penaltyFeedback
-import org.nymph.DialogueData.prohibitedWord
-import org.nymph.DialogueData.triggerProbability
 
 object Dialogue : KotlinPlugin(JvmPluginDescription(
     id = "org.nymph.dialogue",
     name = "Dialogue",
-    version = "0.2.1",
+    version = "0.2.2",
 ) {
     author("parker")
     info("""聊天问答-TB插件子功能模块""")
@@ -65,23 +66,35 @@ object Dialogue : KotlinPlugin(JvmPluginDescription(
         this.globalEventChannel().subscribeGroupMessages(priority = EventPriority.LOWEST) {
             atBot {
                 if (group.botMuteRemaining > 0) return@atBot
-                val filterMessageList: List<Message> = message.filter { it !is At }
-                val filterMessageChain: MessageChain = filterMessageList.toMessageChain()
+                val groupSet = groupConfiguration.getOrPut(group.id) {
+                    GroupSet(33, mutableSetOf(), mutableSetOf(), mutableSetOf(), mutableSetOf())
+                }
+                val filterMessageChain = message.filter { it !is At }.toMessageChain()
                 if ((1..5).random() <= 2) {
-                    if (filterMessageChain.content.trim().contains(
-                            prohibitedWord.joinToString("|").toRegex()
-                        ) && group.botPermission > this.sender.permission
-                    ) {
-                        this.sender.mute((300..900).random())
-                        group.sendMessage(penaltyFeedback.random())
-                        return@atBot
+                    val regex = groupSet.prohibitedWord.joinToString("|")
+                    if (regex.isNotBlank()) {
+                        if (filterMessageChain.content.trim()
+                                .contains(regex.toRegex()) && group.botPermission > this.sender.permission
+                        ) {
+                            this.sender.mute((300..900).random())
+                            group.sendMessage(
+                                groupSet.penaltyFeedback.let {
+                                    if (it.isEmpty()) PublicPenaltyFeedback else it
+                                }.random()
+                            )
+                            return@atBot
+                        }
                     }
                 }
-                val answer = AI.dialogue(group.id, filterMessageChain.content.trim()) ?: invalidProblemFeedback.random()
-                group.sendMessage(answer)
+                group.sendMessage(AI.dialogue(group.id, filterMessageChain.content.trim())
+                    ?: groupSet.invalidProblemFeedback.let {
+                        if (it.isEmpty()) PublicInvalidQuestionFeedback.random() else it.random()
+                    })
             }
             atBot().not().invoke {
-                if (group.botMuteRemaining > 0 && (1..100).random() <= triggerProbability.getOrPut(group.id) { 33 }) return@invoke
+                if (group.botMuteRemaining > 0 && (1..100).random() <= groupConfiguration.getOrPut(group.id) {
+                        GroupSet(33, mutableSetOf(), mutableSetOf(), mutableSetOf(), mutableSetOf())
+                    }.triggerProbability) return@invoke
                 AI.dialogue(group.id, message.content.trim())?.let { answer ->
                     group.sendMessage(answer)
                 }

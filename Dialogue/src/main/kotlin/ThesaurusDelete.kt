@@ -16,7 +16,7 @@ object ThesaurusDelete : SimpleCommand(
     suspend fun MemberCommandSenderOnMessage.main(eid: Int) {
         if (group.botMuteRemaining > 0) return
 
-        Dialogue.SQLiteLink.executeDMLorDDL("DELETE FROM Corpus WHERE id = $eid AND fromGroup = ${group.id};")
-            .let(logger::info)
+        Dialogue.SQLiteLink.executeDMLorDDL("DELETE FROM Corpus WHERE id = $eid AND fromGroup = ${group.id};").let(logger::info)
+        sendMessage("已执行")
     }
 }

@@ -10,7 +10,6 @@ import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
 import net.mamoe.mirai.utils.error
 import okhttp3.OkHttpClient
 import okhttp3.Request
-
 import org.nymph.Data.proxy
 import java.net.SocketTimeoutException
 import java.net.URL

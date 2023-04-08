@@ -13,12 +13,19 @@ object TemplateQuery : SimpleCommand(
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
-        (DialogueData.QASheet[group.id]?.joinToString {
+        val qaSheet = DialogueData.groupConfiguration.getOrPut(group.id) {
+            GroupSet(33, mutableSetOf(), mutableSetOf(), mutableSetOf(), mutableSetOf())
+        }.qaSheet
+        if (qaSheet.isEmpty()) {
+            sendMessage("本群尚无问答模板")
+            return
+        }
+        qaSheet.joinToString {
             "问:${
                 it.question.replace("(.+)", "[]").trim('^', '$')
             }\t答:${
                 "\\$(\\d+)".toRegex().replace(it.answer, "[$1]")
             }\n"
-        } ?: "本群尚无问答模板").let { sendMessage(it) }
+        }
     }
 }

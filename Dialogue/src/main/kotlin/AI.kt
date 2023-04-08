@@ -4,8 +4,9 @@ object AI {
     fun dialogue(group: Long, content: String): String? {
         // 模板查询
         if (3 >= (1..10).random()) {
-            val sheet = DialogueData.QASheet.getOrPut(group) { mutableSetOf() }
-            for (qaPair in sheet) {
+            DialogueData.groupConfiguration.getOrPut(group) {
+                GroupSet(33, mutableSetOf(), mutableSetOf(), mutableSetOf(), mutableSetOf())
+            }.qaSheet.forEach { qaPair ->
                 if (qaPair.question.toRegex().containsMatchIn(content)) {
                     return qaPair.question.toRegex().replace(content, qaPair.answer)
                 }

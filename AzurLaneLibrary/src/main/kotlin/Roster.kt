@@ -18,9 +18,9 @@ object Roster : SimpleCommand(
     }
 
     private fun encodeName(shipName: String): String {
-        val result = SQLiteLink.executeDQLorDCL<RosterData> {
-            "SELECT * FROM Roster WHERE code GLOB '*${shipName}*' OR name GLOB '*${shipName}*';"
-        }
+        val result = SQLiteLink.safeExecuteDQLorDCL<RosterData>(
+            "SELECT * FROM Roster WHERE code GLOB ? OR name GLOB ?;", "*$shipName*", "*$shipName*",
+        )
 
         return when {
             result.error != null -> result.error!!
@@ -30,7 +30,7 @@ object Roster : SimpleCommand(
                     { it.name.length },
                     { it.name }
                 )
-            ).joinToString("", "名字包含有 $shipName 的舰船有:") {
+            ).joinToString("\n", "名字包含有 $shipName 的舰船有:") {
                 "原名：${it.name}\t和谐名：${it.code}"
             }
         }

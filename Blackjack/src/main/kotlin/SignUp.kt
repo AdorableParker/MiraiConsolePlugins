@@ -9,6 +9,7 @@ object SignUp : SimpleCommand(
     description = "投注报名参加"
 ) {
     override val usage: String = "${CommandManager.commandPrefix}报名 [投注金额]\t#$description"
+
     @Handler
     suspend fun MemberCommandSenderOnMessage.main() {
         if (group.botMuteRemaining > 0) return
@@ -17,8 +18,8 @@ object SignUp : SimpleCommand(
 
         when (table?.gameState) {
             null, GameState.Closure -> sendMessage("游戏尚未开局,请使用开局命令开始游戏")
-            GameState.Processing  -> sendMessage("游戏已经开始了,等下一局吧")
-            GameState.CanRegister, GameState.CanStarted -> sendMessage(table.signUp(user.id))
+            GameState.Processing -> sendMessage("游戏已经开始了,等下一局吧")
+            GameState.CanRegister, GameState.CanStarted -> sendMessage(table.signUp(user.id, 100))
         }
     }
 

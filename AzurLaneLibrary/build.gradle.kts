@@ -17,6 +17,6 @@ repositories {
 
 
 dependencies {
-    implementation("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC:0.3.12")
+    implementation("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC:0.3.13")
     "shadowLink"("com.github.AdorableParker.Nymph-ToolDependency-repo:sqliteJDBC")
 }

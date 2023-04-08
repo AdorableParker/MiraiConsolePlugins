@@ -37,16 +37,16 @@ object Construction : SimpleCommand(
                     { it.alias.length },
                     { it.originalName },
                     { it.alias })
-            ).joinToString("", "建造时间为 $time 的舰船有:") {
-                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t${listType(it.type)}\n"
+            ).joinToString("\n", "建造时间为 $time 的舰船有:") {
+                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t${listType(it.type)}"
             }
         }
     }
 
     private fun nameToTime(name: String): String {
-        val result = SQLiteLink.executeDQLorDCL<ConstructTimeData> {
-            "SELECT * FROM ConstructTime WHERE originalName GLOB '*$name*' OR alias GLOB '*$name*';"
-        }
+        val result = SQLiteLink.safeExecuteDQLorDCL<ConstructTimeData>(
+            "SELECT * FROM ConstructTime WHERE originalName GLOB ? OR alias GLOB ?;", "*$name*", "*$name*"
+        )
 
         return when {
             result.error != null -> result.error!!
@@ -60,8 +60,8 @@ object Construction : SimpleCommand(
                     { it.alias.length },
                     { it.originalName },
                     { it.alias })
-            ).joinToString("", "名字包含有 $name 的可建造舰船有:") {
-                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t建造时间：${it.time}\t${listType(it.type)}\n"
+            ).joinToString("\n", "名字包含有 $name 的可建造舰船有:") {
+                "船名：${it.originalName}[${it.alias}]-${it.rarity}\t建造时间：${it.time}\t${listType(it.type)}"
             }
         }
     }

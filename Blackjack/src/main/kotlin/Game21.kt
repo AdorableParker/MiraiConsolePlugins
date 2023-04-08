@@ -75,21 +75,24 @@ class Game21 {
 
     /** 赔率结算 */
     private fun chipSettlement() {
-        val (bj, other) = playerList.partition { it.nowPoint == 21 && it.handCard.size == 2 }
-        if (bj.find { it.playerID == 0L } != null) {
-            bj.forEach { it.odds = 0.0 }
-            return
-        } else bj.forEach { it.odds = 1.5 }
 
-        if (playerList[0].nowPoint <= 21) {
-            val (win, loser) = other.partition { it.nowPoint <= 21 && it.nowPoint > playerList[0].nowPoint }
-            win.forEach { it.odds = 1.0 }
-            val draw = loser.filter { it.nowPoint < playerList[0].nowPoint }
-            draw.forEach { it.odds = 0.0 }
-        } else {
-            val win = other.filter { it.nowPoint <= 21 }
-            win.forEach { it.odds = 1.0 }
+        val (bj, other) = playerList.partition { it.nowPoint == 21 && it.handCard.size == 2 }       // 分离 BJ 玩家
+        if (bj.find { it.playerID == 0L } != null) {                                                // 如果庄也是BJ
+            bj.forEach { it.odds = 0.0 }                                                            // BJ 赌注返还
+            return                                                                                  // 其他玩家赔款
         }
+
+        val unBust = other.filter { it.nowPoint <= 21 }                                         // 去掉爆牌玩家
+        if (playerList[0].nowPoint > 21) {                                                      // 如果庄也爆牌
+            bj.forEach { it.odds = 1.5 }                                                        // BJ 1.5倍赔率
+            unBust.forEach { it.odds = 1.0 }                                                    // 其他 1倍赔率
+            return                                                                              // 爆牌玩家赔款
+        }
+
+        val (win, loser) = unBust.partition { it.nowPoint > playerList[0].nowPoint }        // 分离比庄大的玩家
+        win.forEach { it.odds = 1.0 }                                                       // 获胜者 1倍赔率
+        val draw = loser.filter { it.nowPoint == playerList[0].nowPoint }                   // 去除比庄小的玩家
+        draw.forEach { it.odds = 0.0 }                                                      // 平局玩家赌注返还
     }
 
     /** 结果汇报 */
@@ -127,22 +130,14 @@ class Game21 {
             )
         )
         playerList.clear()
-        playerList.add(Player(0))
+        playerList.add(Player(0, 0))
         gameState = GameState.CanRegister
-    }
-
-    fun signUp(playerID: Long): String {
-        if (findPlayer(playerID)) return "你已经报过名了"
-        if (playerList.size >= 6) return "人数已满,使用发牌命令开始游戏"
-        playerList.add(Player(playerID))
-        gameState = GameState.CanStarted
-        return "报名成功"
     }
 
     fun signUp(playerID: Long, bet: Int): String {
         if (findPlayer(playerID)) return "你已经报过名了"
         if (playerList.size >= 6) return "人数已满,使用发牌命令开始游戏"
-        playerList.add(Player(playerID, ante = bet))
+        playerList.add(Player(playerID, bet))
         gameState = GameState.CanStarted
         return "报名成功"
     }
