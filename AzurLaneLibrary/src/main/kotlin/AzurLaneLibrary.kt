@@ -23,18 +23,18 @@ object AzurLaneLibrary : KotlinPlugin(
     }
 ) {
     val SQLiteLink = SQLiteJDBC(resolveDataPath("AssetData.db"))
-
+    private const val DBVersion  = 12
     override fun onEnable() {
         logger.info { "$info-已加载" }
         Data.reload()
-        if (initialization || Data.version < 11){
+        if (initialization || Data.version < DBVersion){
             val resourceDB = getResourceAsStream("AssetData.db")
             if (resourceDB != null) {
                 val file = resolveDataFile("AssetData.db").outputStream()
                 file.write(resourceDB.readBytes())
                 file.close()
                 initialization = false
-                Data.version = 11
+                Data.version = DBVersion
                 logger.info { "$info-初始化完成" }
             } else logger.error { "$info-初始化异常" }
         }
